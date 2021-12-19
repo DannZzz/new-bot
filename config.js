@@ -4,6 +4,7 @@ const ADMIN = [...DEVELOPER];
 const obj = {
   TOKEN: process.env.TOKEN,
   MONGO: process.env.MONGO,
+  APPLICATION_ID: "726784476377514045",
   DEVELOPER,
   ADMIN,
   GLOBAL_COOLDOWN: 1500,
