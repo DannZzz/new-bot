@@ -111,7 +111,7 @@ const obj = {
             .setImage(`attachment://walking.gif`)
             .setColor("#00ff00");
 
-            await myData = Data.db.findOrCreate("game", int.user.id);
+            const myData = await Data.db.findOrCreate("game", int.user.id);
 
             if (winner.id) {
               await this.levelCheck(myData);
