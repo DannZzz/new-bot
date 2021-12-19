@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Updating discord bot adana",
   "main": "index.js",
+  "engines": {
+    "node": "17.3.0"
+  },
   "scripts": {
     "test": "node index.js"
   },
