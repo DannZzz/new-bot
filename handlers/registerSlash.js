@@ -1,6 +1,6 @@
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-const { TOKEN, SLASH_GUILD } = require('../config');
+const { TOKEN, SLASH_GUILD, APPLICATION_ID } = require('../config');
 const fs = require('fs');
 
 module.exports = async (client) => {
@@ -21,13 +21,13 @@ module.exports = async (client) => {
   		console.log('Started refreshing application (/) commands.');
       if (!SLASH_GUILD) {
         await rest.put(
-        	Routes.applicationCommands("727924929168670720"),
+        	Routes.applicationCommands(APPLICATION_ID),
         	{ body: commands },
         );
       } else if (Array.isArray(SLASH_GUILD) && SLASH_GUILD.length > 0) {
         SLASH_GUILD.forEach(async guildId => {
           await rest.put(
-      			Routes.applicationGuildCommands("727924929168670720", guildId),
+      			Routes.applicationGuildCommands(APPLICATION_ID, guildId),
       			{ body: commands },
       		);
         })
