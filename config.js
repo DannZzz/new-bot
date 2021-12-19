@@ -2,8 +2,8 @@ const DEVELOPER = ["382906068319076372"];
 const ADMIN = [...DEVELOPER];
 
 const obj = {
-  TOKEN: process.env.TOKEN || "NzI3OTI0OTI5MTY4NjcwNzIw.Xvy66w.Q_Qkp_aYGyJ2QfLaKY2EHejqljk",
-  MONGO: process.env.MONGO || "mongodb+srv://DannDev:vard04mak@cluster0.fcdo0.mongodb.net/NewBot",
+  TOKEN: process.env.TOKEN,
+  MONGO: process.env.MONGO,
   DEVELOPER,
   ADMIN,
   GLOBAL_COOLDOWN: 1500,
