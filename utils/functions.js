@@ -8,6 +8,12 @@ const { stripIndents } = require("common-tags");
 const embed = require("dann-embed");
 const Discord = require("discord.js");
 const bonusArr = ["intelligence", "stamina", "defend", "attack"];
+const bonusToRus = {
+  intelligence: "Интеллект",
+  stamina: "Выносливость",
+  defend: "Защита",
+  attack: "Атака"
+}
 
 const obj = {
   startFight: async function (
@@ -28,30 +34,30 @@ const obj = {
     }
   ) {
     const msgEmbed = embed(int.channel.messages.cache.last())
-      .setTitle("Getting buff!")
+      .setTitle("Подготовка!")
       .addField(stripIndents`
-        Your Hero
+        Твой герой
         ${f.heroObj.name}
-        Age: ${this.age(f.heroObj.level)}
-        Items: ${f.heroObj.items.map(i => Data.weapons.method.findWeapon(i).emoji).join(" ")}
+        Эпоха: ${this.age(f.heroObj.level)}
+        Предметы: ${f.heroObj.items.map(i => Data.weapons.method.findWeapon(i).emoji).join(" ")}
       `, stripIndents`
-        Force: \`${Data.F.forceGenerator(f.heroObj.intelligence, f.heroObj.stamina, f.heroObj.defend, f.heroObj.attack)}\`
-        ${Data.emoji.intelligence} Intelligence: \`${f.heroObj.intelligence}\`
-        ${Data.emoji.stamina} Stamina: \`${f.heroObj.stamina}\`
-        ${Data.emoji.defend} Defend: \`${f.heroObj.defend}\`
-        ${Data.emoji.attack} Attack: \`${f.heroObj.attack}\`
+        Сила: \`${Data.F.forceGenerator(f.heroObj.intelligence, f.heroObj.stamina, f.heroObj.defend, f.heroObj.attack)}\`
+        ${Data.emoji.intelligence} Интеллект: \`${f.heroObj.intelligence}\`
+        ${Data.emoji.stamina} Выносливость: \`${f.heroObj.stamina}\`
+        ${Data.emoji.defend} Защита: \`${f.heroObj.defend}\`
+        ${Data.emoji.attack} Атака: \`${f.heroObj.attack}\`
       `, true)
       .addField(stripIndents`
-        Enemy
+        Враг
         ${s.heroObj.name}
-        Age: ${this.age(s.heroObj.level)}
-        Items: ${s.heroObj.items.map(i => Data.weapons.method.findWeapon(i).emoji).join(" ")}
+        Эпоха: ${this.age(s.heroObj.level)}
+        Предметы: ${s.heroObj.items.map(i => Data.weapons.method.findWeapon(i).emoji).join(" ")}
       `, stripIndents`
-        Force: \`${Data.F.forceGenerator(s.heroObj.intelligence, s.heroObj.stamina, s.heroObj.defend, s.heroObj.attack)}\`
-        ${Data.emoji.intelligence} Intelligence: \`${s.heroObj.intelligence}\`
-        ${Data.emoji.stamina} Stamina: \`${s.heroObj.stamina}\`
-        ${Data.emoji.defend} Defend: \`${s.heroObj.defend}\`
-        ${Data.emoji.attack} Attack: \`${s.heroObj.attack}\`
+        Сила: \`${Data.F.forceGenerator(s.heroObj.intelligence, s.heroObj.stamina, s.heroObj.defend, s.heroObj.attack)}\`
+        ${Data.emoji.intelligence} Интеллект: \`${s.heroObj.intelligence}\`
+        ${Data.emoji.stamina} Выносливость: \`${s.heroObj.stamina}\`
+        ${Data.emoji.defend} Защита: \`${s.heroObj.defend}\`
+        ${Data.emoji.attack} Атака: \`${s.heroObj.attack}\`
       `, true)
       .setColor(Data.config.MAIN_COLOR)
       
@@ -59,12 +65,12 @@ const obj = {
 
       const b1 = new Data.Discord.MessageButton()
       .setCustomId("quickFight")
-      .setLabel("Quick fight")
+      .setLabel("Быстрый бой")
       .setStyle("SECONDARY");
 
       const b2 = new Data.Discord.MessageButton()
       .setCustomId("getBonus")
-      .setLabel("Try your luck!")
+      .setLabel("Испытать удачу!")
       .setStyle("SECONDARY")
 
       const row = new Data.Discord.MessageActionRow().addComponents([b1, b2]);
@@ -102,13 +108,12 @@ const obj = {
 
             const reward = Data.util.random(Math.min(...Data.config.FIGHT_APPLE_WIN), Math.max(...Data.config.FIGHT_APPLE_WIN))
 
-            const emb = Data.embed(int).setTitle("New Winner!").setText(stripIndents`
-              You won!
-              And now you get ${Data.emoji.apple}\`${reward}\`
+            const emb = Data.embed(int).setTitle("Новый победитель!").setText(stripIndents`
+              Ты выиграл!
+              И получил ${Data.emoji.apple}\`${reward}\`
             `)
             .setThumbnail(`attachment://dying.gif`)
             .setAuthor(int.user.username, int.user.displayAvatarURL({dynamic: true}))
-            .setImage(`attachment://walking.gif`)
             .setColor("#00ff00");
 
             const myData = await Data.db.findOrCreate("game", int.user.id);
@@ -127,13 +132,12 @@ const obj = {
             const winnerAttachment = new Data.Discord.MessageAttachment(`./assets/heroes/${s.heroObj.name}/${s.heroObj.level}/walking.gif`, "walking.gif");
             const loserAttachment = new Data.Discord.MessageAttachment(`./assets/heroes/${f.heroObj.name}/${f.heroObj.level}/dying.gif`, "dying.gif");
 
-            const emb = Data.embed(int).setTitle("New Winner!").setText(stripIndents`
-              But it is not you..
-              Try again later!
+            const emb = Data.embed(int).setTitle("Новый победитель!").setText(stripIndents`
+              Но это не ты..
+              Попробуй снова позже!
             `)
             .setThumbnail(`attachment://dying.gif`)
             .setAuthor(int.user.username, int.user.displayAvatarURL({dynamic: true}))
-            .setImage(`attachment://walking.gif`)
             .setColor("#ff0000");
             msg.delete();
 
@@ -152,35 +156,35 @@ const obj = {
             f.heroObj[item] += forAdd;
 
             embed(int.channel.messages.cache.last())
-            .setSuccess(`Nice, you got ${Data.emoji[item]}\`${forAdd}\` as a bonus!`)
+            .setSuccess(`Вау, ты получил ${Data.emoji[item]}\`${forAdd}\` как бонус!`)
             .setAuthor(int.user.username, int.user.displayAvatarURL({dynamic: true}))
             .send();
 
             const toChange = embed(int.channel.messages.cache.last())
-            .setTitle("Getting buff!")
+            .setTitle("Подготовка!")
             .addField(stripIndents`
-              Your Hero
+              Твой герой
               ${f.heroObj.name}
-              Age: ${this.age(f.heroObj.level)}
-              Items: ${f.heroObj.items.map(i => Data.weapons.method.findWeapon(i).emoji).join(" ")}
+              Эпоха: ${this.age(f.heroObj.level)}
+              Предметы: ${f.heroObj.items.map(i => Data.weapons.method.findWeapon(i).emoji).join(" ")}
             `, stripIndents`
-              Force: \`${Data.F.forceGenerator(f.heroObj.intelligence, f.heroObj.stamina, f.heroObj.defend, f.heroObj.attack)}\`
-              ${Data.emoji.intelligence} Intelligence: \`${f.heroObj.intelligence}\`
-              ${Data.emoji.stamina} Stamina: \`${f.heroObj.stamina}\`
-              ${Data.emoji.defend} Defend: \`${f.heroObj.defend}\`
-              ${Data.emoji.attack} Attack: \`${f.heroObj.attack}\`
+              Сила: \`${Data.F.forceGenerator(f.heroObj.intelligence, f.heroObj.stamina, f.heroObj.defend, f.heroObj.attack)}\`
+              ${Data.emoji.intelligence} Интеллект: \`${f.heroObj.intelligence}\`
+              ${Data.emoji.stamina} Выносливость: \`${f.heroObj.stamina}\`
+              ${Data.emoji.defend} Защита: \`${f.heroObj.defend}\`
+              ${Data.emoji.attack} Атака: \`${f.heroObj.attack}\`
             `, true)
             .addField(stripIndents`
-              Enemy
+              Враг
               ${s.heroObj.name}
-              Age: ${this.age(s.heroObj.level)}
-              Items: ${s.heroObj.items.map(i => Data.weapons.method.findWeapon(i).emoji).join(" ")}
+              Эпоха: ${this.age(s.heroObj.level)}
+              Предметы: ${s.heroObj.items.map(i => Data.weapons.method.findWeapon(i).emoji).join(" ")}
             `, stripIndents`
-              Force: \`${Data.F.forceGenerator(s.heroObj.intelligence, s.heroObj.stamina, s.heroObj.defend, s.heroObj.attack)}\`
-              ${Data.emoji.intelligence} Intelligence: \`${s.heroObj.intelligence}\`
-              ${Data.emoji.stamina} Stamina: \`${s.heroObj.stamina}\`
-              ${Data.emoji.defend} Defend: \`${s.heroObj.defend}\`
-              ${Data.emoji.attack} Attack: \`${s.heroObj.attack}\`
+              Сила: \`${Data.F.forceGenerator(s.heroObj.intelligence, s.heroObj.stamina, s.heroObj.defend, s.heroObj.attack)}\`
+              ${Data.emoji.intelligence} Интеллект: \`${s.heroObj.intelligence}\`
+              ${Data.emoji.stamina} Выносливость: \`${s.heroObj.stamina}\`
+              ${Data.emoji.defend} Защита: \`${s.heroObj.defend}\`
+              ${Data.emoji.attack} Атака: \`${s.heroObj.attack}\`
             `, true)
             .setColor(Data.config.MAIN_COLOR)
             .setAuthor(int.user.username, int.user.displayAvatarURL({dynamic: true}))
@@ -191,8 +195,8 @@ const obj = {
 
           } else {
             collector.stop();
-            const emb = Data.embed(int).setTitle("Woah you got bomb!").setText(stripIndents`
-                Try again later!
+            const emb = Data.embed(int).setTitle("Ляяя тебе выпала бомба!").setText(stripIndents`
+                Попробуй снова позже!
               `)
               .setAuthor(int.user.username, int.user.displayAvatarURL({dynamic: true}))
               .setColor("#ff0000");
@@ -267,13 +271,13 @@ const obj = {
     return false;
   },
   age: function(level) {
-    let heroType = "Feudal";
+    let heroType = "Феодальная";
     switch (level) {
       case 2:
-        heroType = "Castle";
+        heroType = "Замковая";
         break;
       case 3:
-        heroType = "Imperial";
+        heroType = "Имперская";
         break;
     }
     return heroType;
@@ -323,7 +327,7 @@ const obj = {
   bonusCollector: function (heroObj = {}, formatter = false) {
     const bonuses = [];
     for (let item of bonusArr) {
-      bonuses.push(`${emoji[item]} ${this.firstUpperCase(item)}: \`${formatter ? util.formatNumber(heroObj[item]) : heroObj[item]}\``)  
+      bonuses.push(`${emoji[item]} ${bonusToRus[item]}: \`${formatter ? util.formatNumber(heroObj[item]) : heroObj[item]}\``)  
     }
     return bonuses;
   },
