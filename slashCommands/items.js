@@ -4,8 +4,8 @@ const { stripIndents } = require("common-tags");
 
 module.exports = {
   data: new SlashCommandBuilder()
-  .setName("items")
-  .setDescription("Items information!"),
+  .setName("предметы")
+  .setDescription("Информация о предметах!"),
   run: async (client, int, Data) => {
     const { weapons, emoji, embed, util, F, Discord } = Data;
 
@@ -17,9 +17,9 @@ module.exports = {
         bonuses.push(`${emoji[bonusName]}\`${obj.bonus[bonusName]}\``)
       };
 
-      const cost = ( !weapons.blocked.includes(obj.id) && obj.cost && (obj.costType ? `${emoji[obj.costType.slice(0, obj.costType.length-1)]}\`${util.formatNumber(obj.cost)}\`` : `${emoji.apple}\`${util.formatNumber(obj.cost)}\``) ) || "`Unavailable`";
+      const cost = ( !weapons.blocked.includes(obj.id) && obj.cost && (obj.costType ? `${emoji[obj.costType.slice(0, obj.costType.length-1)]}\`${util.formatNumber(obj.cost)}\`` : `${emoji.apple}\`${util.formatNumber(obj.cost)}\``) ) || "`Недоступен`";
 
-      return `${obj.emoji} Index: \`${index}\`|Name: \`${name}\`\nBonus: ${bonuses.join("")}|Cost: ${cost}`
+      return `${obj.emoji} Индекс: \`${index}\`|Название: \`${name}\`\nБонус: ${bonuses.join("")}|Цена: ${cost}`
     });
 
     const arr = [];
@@ -28,7 +28,7 @@ module.exports = {
     pages();
     function pages() {
       const sliced = text.slice(i, i + 5);
-      arr.push(embed(int).setText(sliced.join("\n\n")).setTitle("Items information!"))
+      arr.push(embed(int).setText(sliced.join("\n\n")).setTitle("Информация о предметах!"))
 
       i += 5;
       if (i < text.length) pages();

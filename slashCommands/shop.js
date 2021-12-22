@@ -4,13 +4,13 @@ const bonusArr = ["intelligence", "stamina", "defend", "attack"];
 
 module.exports = {
 	data: new SlashCommandBuilder()
-	.setName("shop")
-	.setDescription("Our shop!")
-	.addSubcommand(cmd => cmd.setName("heroes")
-		.setDescription("Shop of heroes!")
+	.setName("магазин")
+	.setDescription("Наш магазин!")
+	.addSubcommand(cmd => cmd.setName("герои")
+		.setDescription("Магазин героев!")
 	)
-	.addSubcommand(cmd => cmd.setName("credits")
-		.setDescription("Shop of credits!")),
+	.addSubcommand(cmd => cmd.setName("кредиты")
+		.setDescription("Магазин кредитов!")),
 
 	run: async (client, int, Data) => {
 
@@ -29,16 +29,16 @@ module.exports = {
 					}
 
 					const toAdd = embed(int)
-						.setAuthor(`Name: ${heroObj.name}`)
-						.setTitle(`Available for buy: ${heroObj.forBuy ? "Yes" : "No"}\nAge: ${F.age(1)}`)
+						.setAuthor(`Герой: ${heroObj.name}`)
+						.setTitle(`Доступен для покупки: ${heroObj.forBuy ? "Да" : "Нет"}\nЭпоха: ${F.age(1)}`)
 						.setText(stripIndents`
-							Force: \`${F.forceGenerator(...(bonusArr.map(a => heroObj[a])))}\`
+							Сила: \`${F.forceGenerator(...(bonusArr.map(a => heroObj[a])))}\`
 							${bonuses.join("\n")}
 						`);
 
 					if (heroObj.forBuy) {
 
-						toAdd.addField("Cost:", `${emoji[heroObj.costType.slice(0, heroObj.costType.length-1)]}\`${util.formatNumber(heroObj.cost)}\``)
+						toAdd.addField("Цена:", `${emoji[heroObj.costType.slice(0, heroObj.costType.length-1)]}\`${util.formatNumber(heroObj.cost)}\``)
 					}
 
 					toAdd.Attachment = new Discord.MessageAttachment(`./assets/heroes/${heroObj.name}/1/walking.gif`, `${heroObj.name.split(" ").join("")}.gif`);
@@ -62,7 +62,7 @@ module.exports = {
 
 				const b3 = new Discord.MessageButton()
 				.setCustomId("heroesbuy")
-				.setLabel("Buy")
+				.setLabel("Купить этот герой")
 				.setStyle("PRIMARY")
 
 				let page = 0;
@@ -89,8 +89,8 @@ module.exports = {
 			      } else if (!ids.includes(i.user.id)) {
 			        const intEmbed = new Discord.MessageEmbed()
 			            .setColor("#ff0000")
-			            .setTitle("Error!")
-			            .setDescription("This button can not work dor you!")
+			            .setTitle("Ошибка!")
+			            .setDescription("Эта кнопка недоступна для вас!")
 			          
 			          return i.reply({embeds: [intEmbed], ephemeral: true})
 			      }
@@ -117,12 +117,12 @@ module.exports = {
 
 				        	const hero = heroes[page];
 
-				        	if (!hero.forBuy) return embed(int).setError("This hero is not available!").send("followUp", true);
+				        	if (!hero.forBuy) return embed(int).setError("Этот герой недоступен!").send("followUp", true);
 				        	const myData = await db.findOrCreate("profile", int.user.id);
 				        	const gameData = await db.findOrCreate("game", int.user.id);
-				        	if (hero.cost > myData[hero.costType]) return embed(int).setError(`You do not have enough ${emoji[hero.costType.slice(0, hero.costType.length-1)]}!`).send("followUp", true);
+				        	if (hero.cost > myData[hero.costType]) return embed(int).setError(`У тебя недостаточно ${emoji[hero.costType.slice(0, hero.costType.length-1)]}!`).send("followUp", true);
 				        	const checkHero = gameData.heroes.find(obj => obj.name === hero.name);
-				        	if (checkHero) return embed(int).setError("You already have this hero!").send("followUp", true);
+				        	if (checkHero) return embed(int).setError("Ты уже имеешь этого героя!").send("followUp", true);
 				        	await db[hero.costType](int.user.id, -hero.cost);
 				        	gameData.heroes.push({
 						        name: hero.name,
@@ -135,7 +135,7 @@ module.exports = {
 						        items: [],
 						    });
 				        	gameData.save();
-				        	embed(int).setSuccess(`You successfully bought **${hero.name}**!`).send("followUp")
+				        	embed(int).setSuccess(`Ты купил — **${hero.name}**!`).send("followUp")
 				        	break;
 				        }
 				        default:

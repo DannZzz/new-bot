@@ -7,11 +7,11 @@ const bonusArr = ["intelligence", "stamina", "defend", "attack"];
 
 module.exports = {
   data: new SlashCommandBuilder()
-  .setName("profile")
-  .setDescription("User profile!")
+  .setName("профиль")
+  .setDescription("Профиль пользователя!")
   .addUserOption(option =>
-    option.setName("member")
-    .setDescription("Option guild member")),
+    option.setName("участник")
+    .setDescription("Смотреть профиль участника сервера")),
 
   run: async (client, int, Data) => {
     const { Discord, F, util, embed, db, emoji, config } = Data;
@@ -27,17 +27,9 @@ module.exports = {
 
     const main = F.getFinalHeroData(mainHero, mainHero.items || []);
 
-    let heroType = "Feudal";
+   
 
 
-    switch (mainHero.level) {
-      case 2:
-        heroType = "Castle";
-        break;
-      case 3:
-        heroType = "Imperial";
-        break;
-    }
 
     const thisHeroMaxItemCount = config.DEFAULT_ITEM_COUNT + (mainHero.level || 1);
     const items = (mainHero.items || []).map(id => weapons.method.findWeapon(id).emoji);
@@ -48,21 +40,21 @@ module.exports = {
     const attachment = new Discord.MessageAttachment(`./assets/heroes/${character.name}/${[mainHero.level]}/walking.gif`, `main.gif`);
 
     const emb = embed(int)
-      .setAuthor(`Profile ${member.user.tag}`, member.user.displayAvatarURL({dynamic: true}))
-      .addField("Balance:", `${emoji.coin}\`${util.formatNumber(data.coins || 0)}\``)
-      .addField("Apples:", `${emoji.apple}\`${util.formatNumber(data.apples || 0)}\``)
+      .setAuthor(`Профиль — ${member.user.tag}`, member.user.displayAvatarURL({dynamic: true}))
+      .addField("Баланс:", `${emoji.coin}\`${util.formatNumber(data.coins || 0)}\``)
+      .addField("Яблоки:", `${emoji.apple}\`${util.formatNumber(data.apples || 0)}\``)
       .setThumbnail(`attachment://main.gif`)
-      .addField("Items:", itemText)
-      .addField(`Hero: ${character.name}\nAge of hero: \`${heroType}\`\nForce: \`${force}\``, stripIndents`${emoji.intelligence} Intelligence: \`${util.formatNumber(main.intelligence)}\`
-                                                        ${emoji.stamina} Stamina: \`${util.formatNumber(main.stamina)}\`
-                                                        ${emoji.defend} Defend: \`${util.formatNumber(main.defend)}\`
-                                                        ${emoji.attack} Attack: \`${util.formatNumber(main.attack)}\``)
+      .addField("Предметы:", itemText)
+      .addField(`Герой: ${character.name}\nЭпоха: \`${F.age(main.level || 1)}\`\nСила: \`${force}\``, stripIndents`${emoji.intelligence} Интеллект: \`${util.formatNumber(main.intelligence)}\`
+                                                        ${emoji.stamina} Выносливость: \`${util.formatNumber(main.stamina)}\`
+                                                        ${emoji.defend} Защита: \`${util.formatNumber(main.defend)}\`
+                                                        ${emoji.attack} Атака: \`${util.formatNumber(main.attack)}\``)
 
     let embeds = [];
 
     const buttonToStart = new Discord.MessageButton()
     .setStyle("SECONDARY")
-    .setLabel("Your heroes")
+    .setLabel("Мои герои")
     .setCustomId("StartCheckHeroes")
 
     const rowToStart = new Discord.MessageActionRow().addComponents(buttonToStart);
@@ -84,8 +76,8 @@ module.exports = {
         } else if (!ids.includes(i.user.id)) {
           const intEmbed = new Discord.MessageEmbed()
               .setColor("#ff0000")
-              .setTitle("Error!")
-              .setDescription("This button can not work for you!")
+              .setTitle("Ошибка!")
+              .setDescription("Эта кнопка недоступна для вас!")
               
             return i.reply({embeds: [intEmbed], ephemeral: true})
         }
@@ -118,9 +110,9 @@ module.exports = {
 
 
           const embToArr = embed(int)
-          .setAuthor(`Name: ${hero.name}`)
-          .addField("Items:", itemText)
-          .addField(stripIndents`Age of hero: \`${F.age(heroObj.level || 1)}\`\nForce: \`${F.forceGenerator(...(bonusArr.map(a => heroObj[a])))}\``, stripIndents`
+          .setAuthor(`Герой: ${hero.name}`)
+          .addField("Предметы:", itemText)
+          .addField(stripIndents`Эпоха: \`${F.age(heroObj.level || 1)}\`\nСила: \`${F.forceGenerator(...(bonusArr.map(a => heroObj[a])))}\``, stripIndents`
             ${bonuses.join("\n")}
           `)
 
@@ -167,8 +159,8 @@ module.exports = {
           } else if (!ids.includes(i.user.id)) {
             const intEmbed = new Discord.MessageEmbed()
                 .setColor("#ff0000")
-                .setTitle("Error!")
-                .setDescription("This button can not work dor you!")
+                .setTitle("Ошибка!")
+                .setDescription("Эта кнопка недоступна для вас!")
                 
               return i.followUp({embeds: [intEmbed], ephemeral: true})
           }
@@ -195,10 +187,10 @@ module.exports = {
               tryMe = false;
               const nowData = await db.findOrCreate("game", int.user.id);
               const selectedHero = nowData.heroes[page];
-              if (!selectedHero) return embed(int).setError("Unexpected error!").send("followUp", true);
-              if (page === nowData.main) return embed(int).setError("This hero already selected as main hero!").send("followUp", true);
+              if (!selectedHero) return embed(int).setError("Непонятная ошибка!").send("followUp", true);
+              if (page === nowData.main) return embed(int).setError("Этот герой уже выбран как основной!").send("followUp", true);
               await db.models.game.updateOne({_id: int.user.id}, {$set: {main: Math.round(page)}});
-              embed(int).setSuccess(`Hero **${selectedHero.name}** successfully selected as main hero!`).send("followUp", true);
+              embed(int).setSuccess(`Герой **${selectedHero.name}** успешно выбран как основной!`).send("followUp", true);
               break;
             }
             default:

@@ -3,32 +3,30 @@ const { progressBar } = require("../utils/functions");
 
 module.exports = {
   data: new SlashCommandBuilder()
-  	.setName('ship')
-  	.setDescription('Shipping with users or items!')
+  	.setName('шип')
+  	.setDescription('Шиппинг с участниками или с предметами!')
   	.addUserOption(option =>
-  		option.setName('member')
-  			.setDescription('The guild member!'))
+  		option.setName('участник')
+  			.setDescription('Участник сервера!'))
     .addStringOption(option =>
-      option.setName("item")
-        .setDescription("Any item!")),
-  cooldown: 10,
-  permissions: ["ADMINISTRATOR"],
+      option.setName("предмет")
+        .setDescription("Какой-то предмет!")),
   run: async (client, int, Data) => {
     const { Discord, embed, util } = Data;
 
     let rand = util.random(0, 100);
-    const member = int.options.getMember("member");
-    const item = int.options.getString("item");
+    const member = int.options.getMember("участник");
+    const item = int.options.getString("предмет");
     if (!item && !member) {
-      return embed(int).setError(`Please specify an item or a user!`).send();
+      return embed(int).setError(`Укажите участника, или предмет!`).send();
     }
 
     if (member) {
-      return embed(int).setColor("RANDOM").setText(`**Your love with ${member} is..**\n${progressBar(rand, 100, 10)}`).send();
+      return embed(int).setColor("RANDOM").setText(`**Твоя любовь с ${member} составляет..**\n${progressBar(rand, 100, 10)}`).send();
     }
 
     if(item) {
-      return embed(int).setColor("RANDOM").setText(`**Your love with ${item} is..**\n${progressBar(rand, 100, 10)}`).send();
+      return embed(int).setColor("RANDOM").setText(`**Твоя любовь с **${item}** составляет..**\n${progressBar(rand, 100, 10)}`).send();
     }
 
   }

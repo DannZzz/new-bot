@@ -4,15 +4,15 @@ const { stripIndents } = require("common-tags");
 
 module.exports = {
   data: new SlashCommandBuilder()
-  .setName("buy")
-  .setDescription("Buy an item!")
-  .addNumberOption(option => option.setName("index")
-    .setDescription("Index of item!")
+  .setName("купить")
+  .setDescription("Купить предмет!")
+  .addNumberOption(option => option.setName("индекс")
+    .setDescription("Индекс предмета!")
     .setRequired(true)),
   run: async (client, int, Data) => {
     const { db, emoji, embed, config, F, util, weapons } = Data;
 
-    const index = int.options.getNumber("index");
+    const index = int.options.getNumber("индекс");
 
     const game = await db.findOrCreate("game", int.user.id);
     const profile = await db.findOrCreate("profile", int.user.id);
@@ -21,13 +21,13 @@ module.exports = {
 
     const bag = game.bag || [];
 
-    if (bag.length >= maxSize) return embed(int).setError("You do not have enough space in your bag!").send();
+    if (bag.length >= maxSize) return embed(int).setError("У тебя недостаточно звезд!").send();
 
     const weaponData = weapons.method.findWeapon(index);
 
-    if (!weaponData) return embed(int).setError("Item with this index not found!").send();
+    if (!weaponData) return embed(int).setError("Предмет с этим индексом не найден!").send();
 
-    if (weapons.blocked.includes(weaponData.id)) return embed(int).setError("This item is not available!").send();
+    if (weapons.blocked.includes(weaponData.id)) return embed(int).setError("Этот предмет не доступен!").send();
 
     let costType = "apples";
 
@@ -35,9 +35,9 @@ module.exports = {
       costType = weaponData.costType;
     };
 
-    if (!weaponData.cost) return embed(int).setError("Unexpected error!").send();
+    if (!weaponData.cost) return embed(int).setError("Непонятная ошибка!").send();
 
-    if (profile[costType] < weaponData.cost) return embed(int).setError(`You do not have enough ${emoji[costType.slice(0, costType-1)]}!`).send();
+    if (profile[costType] < weaponData.cost) return embed(int).setError(`У тебя недостаточно ${emoji[costType.slice(0, costType-1)]}!`).send();
 
     game.bag = [...bag, weaponData.id];
     game.save();
@@ -45,7 +45,7 @@ module.exports = {
     await db[costType](int.user.id, -weaponData.cost);
 
 
-    return embed(int).setSuccess(`You successfull bought ${weaponData.emoji}`).send();
+    return embed(int).setSuccess(`Ты купил ${weaponData.emoji}`).send();
 
   }
 }

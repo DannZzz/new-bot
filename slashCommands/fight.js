@@ -3,8 +3,8 @@ const { stripIndents } = require("common-tags");
 
 module.exports = {
   data: new SlashCommandBuilder()
-  .setName("fight")
-  .setDescription("Start fighting!"),
+  .setName("бой")
+  .setDescription("Начать бой!"),
   cooldown: 15,
   run: async (client, int, Data) => {
     const { weapons, embed, util, F, db, emoji, config, heroes, Discord } = Data;
@@ -12,7 +12,7 @@ module.exports = {
     const data = await db.findOrCreate("profile", int.user.id);
     if (data.cooldowns.fight && data.cooldowns.fight > new Date()) {
       const time = F.getTime(data.cooldowns.fight)
-      return embed(int).setError(`Try again in ${time.minutes} mins. ${time.seconds} sec.`).send();
+      return embed(int).setError(`Попробуй снова через ${time.minutes} мин. ${time.seconds} сек.`).send();
     }
 
     client.ops.GLOBAL_MENU_COOLDOWN.add(int.user.id);
@@ -27,19 +27,19 @@ module.exports = {
       fighting = new Discord.MessageAttachment(`./assets/heroes/${hero.name}/${hero.level}/fighting.gif`, `hero${i}.gif`);
 
       const embedMain = embed(int)
-        .setTitle(`Choose your next enemy!`)
+        .setTitle(`Выбирай противника!`)
         .addField(stripIndents`
-          **Main enemy:**
-          **Name: ${hero.name}**
-          **Age: ${F.age(hero.level)}**
-          **Items:**
+          **Основной враг:**
+          **Имя: ${hero.name}**
+          **Эпоха: ${F.age(hero.level)}**
+          **Предметы:**
           ${hero["items"].map(i => weapons.method.findWeapon(i).emoji).join(" ")}
           `, stripIndents`
-          Force: \`${F.forceGenerator(hero.intelligence, hero.stamina, hero.defend, hero.attack)}\`
-          ${emoji.intelligence} Intelligence: \`${hero.intelligence}\`
-          ${emoji.stamina} Stamina: \`${hero.stamina}\`
-          ${emoji.defend} Defend: \`${hero.defend}\`
-          ${emoji.attack} Attack: \`${hero.attack}\`
+          Сила: \`${F.forceGenerator(hero.intelligence, hero.stamina, hero.defend, hero.attack)}\`
+          ${emoji.intelligence} Ителлект: \`${hero.intelligence}\`
+          ${emoji.stamina} Выносливость: \`${hero.stamina}\`
+          ${emoji.defend} Защита: \`${hero.defend}\`
+          ${emoji.attack} Атака: \`${hero.attack}\`
           `)
         .setThumbnail(`attachment://hero${i}.gif`);
 
@@ -54,12 +54,12 @@ module.exports = {
 
     const b1 = new Discord.MessageButton()
     .setCustomId("ThisEnemy")
-    .setLabel("This enemy")
+    .setLabel("Этот враг")
     .setStyle("SECONDARY");
 
     const b2 = new Discord.MessageButton()
     .setCustomId("NextEnemy")
-    .setLabel("Next enemy")
+    .setLabel("Другой враг")
     .setStyle("SECONDARY")
     .setEmoji("➡");
 
@@ -105,7 +105,7 @@ module.exports = {
             int.editReply(emb)
             break;
           } else {
-            embed(i).setError(`You can change enemy only 3 times!`).send("followUp", true);
+            embed(i).setError(`Ты можешь менять только 3 раза!`).send("followUp", true);
             break;
           }
         }

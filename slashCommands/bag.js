@@ -4,8 +4,8 @@ const { stripIndents } = require("common-tags");
 
 module.exports = {
   data: new SlashCommandBuilder()
-  .setName("bag")
-  .setDescription("Your bag of items!"),
+  .setName("сумка")
+  .setDescription("Твоя сумка предметов!!"),
   run: async (client, int, Data) => {
     const { db, config, emoji, weapons, embed, util, F } = Data;
     
@@ -16,7 +16,7 @@ module.exports = {
 
     const text = bag.map(id => weapons.method.findWeapon(id).emoji);
     const itemText = bagInterfaceMaker(text, count);
-    embed(int).setTitle(`Your items [${text.length}]\nBag space: \`${count}\``).setThumbnail(int.user.displayAvatarURL({dynamic: true})).setText(itemText).send()
+    embed(int).setTitle(`Твои вещи [${text.length}]\nВместимость сумки: \`${count}\``).setThumbnail(int.user.displayAvatarURL({dynamic: true})).setText(itemText).send()
 
   }
 }
