@@ -16,18 +16,6 @@ module.exports = async (client) => {
 
   const rest = new REST({ version: '9' }).setToken(TOKEN);
   
-  await rest.get(Routes.applicationCommands(APPLICATION_ID))
-    .then(data => {
-        const promises = [];
-        for (const command of data) {
-          
-          const deleteUrl = `${Routes.applicationCommands(APPLICATION_ID)}/${command.id}`;
-          promises.push(rest.delete(deleteUrl));
-        
-        }
-        return Promise.all(promises);
-    });
-  
   (async () => {
   	try {
   		console.log('Started refreshing application (/) commands.');
