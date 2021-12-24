@@ -7,5 +7,9 @@ module.exports = {
   defend: "<:defend:920675001177346089>",
   add: "<:add:921000996132499507>",
   leftarrow: "<:leftarrow:922067378056085505>",
-  rightarrow: "<:rightarrow:922067378190295040>"
+  rightarrow: "<:rightarrow:922067378190295040>",
+  money1: "<:money1:923853335424016384>",
+  money2: "<:money2:923853336288067625>",
+  money3: "<:money3:923853335176568913>",
+  casinoLogo: "<:casinologo:923854495681761291>",
 }
