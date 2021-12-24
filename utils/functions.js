@@ -25,7 +25,7 @@ const obj = {
     f = {
       user: true,
       id: "",
-      heroObj: {}, 
+      heroObj: {},
     },
     s = {
       user: false,
@@ -60,7 +60,7 @@ const obj = {
         ${Data.emoji.attack} Атака: \`${s.heroObj.attack}\`
       `, true)
       .setColor(Data.config.MAIN_COLOR)
-      
+
       msgEmbed.author = {}
 
       const b1 = new Data.Discord.MessageButton()
@@ -126,7 +126,7 @@ const obj = {
 
             await Data.util.delay(2500);
 
-            msg.channel.send({embeds: [emb], files: [winnerAttachment, loserAttachment]});
+            msg.channel.send({embeds: [emb], files: [loserAttachment]});
           } else {
 
             const winnerAttachment = new Data.Discord.MessageAttachment(`./assets/heroes/${s.heroObj.name}/${s.heroObj.level}/walking.gif`, "walking.gif");
@@ -142,8 +142,8 @@ const obj = {
             msg.delete();
 
             await Data.util.delay(2500);
-            msg.channel.send({embeds: [emb], files: [winnerAttachment, loserAttachment]});
-            }; 
+            msg.channel.send({embeds: [emb], files: [loserAttachment]});
+            };
         } else {
           const randomForReward = Data.util.random(1, 100);
           if (randomForReward > 50) {
@@ -289,13 +289,13 @@ const obj = {
     let maxitems = config.DEFAULT_ITEM_COUNT + hero.level;
     let currentItemCount = util.random(0, maxitems);
     let itemArr = [];
-  
+
     while (currentItemCount > 0) {
       let weapon = weapons.method.randomWeapon();
       itemArr.push(weapon.id);
       --currentItemCount;
     }
-  
+
     hero.items = itemArr;
     let finalHero = this.getFinalHeroData(hero, itemArr)
     // console.log(`FINAL HERO:`)
@@ -327,7 +327,7 @@ const obj = {
   bonusCollector: function (heroObj = {}, formatter = false) {
     const bonuses = [];
     for (let item of bonusArr) {
-      bonuses.push(`${emoji[item]} ${bonusToRus[item]}: \`${formatter ? util.formatNumber(heroObj[item]) : heroObj[item]}\``)  
+      bonuses.push(`${emoji[item]} ${bonusToRus[item]}: \`${formatter ? util.formatNumber(heroObj[item]) : heroObj[item]}\``)
     }
     return bonuses;
   },
@@ -360,13 +360,13 @@ const obj = {
     let page = 0;
 
     const row = new Discord.MessageActionRow().addComponents(buttonList);
-    
+
     const curPage = await interaction.reply({
       embeds: [pages[page].setFooter(`${page + 1} / ${pages.length}`)],
       components: [row],fetchReply: true,
     });
 
-    
+
     const filter = (i) => { if (
       (i.customId === buttonList[0].customId ||
       i.customId === buttonList[1].customId) &&
@@ -377,10 +377,10 @@ const obj = {
             .setColor("#ff0000")
             .setTitle("Error!")
             .setDescription("This button can not work for you!")
-          
+
           return i.reply({embeds: [intEmbed], ephemeral: true})
       }
-        
+
     };
 
     const collector = await curPage.createMessageComponentCollector({
