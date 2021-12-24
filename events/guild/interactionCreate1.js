@@ -26,16 +26,16 @@ module.exports = {
     const cooldowns = client.ops.cooldowns;
     if (commandCheck) {
 
-      if (client.ops.shop.has(interaction.user.id)) return embed(interaction).setError("Wait until `shop` will ended!").send();
-      if (client.ops.GLOBAL_MENU_COOLDOWN.has(interaction.user.id)) return embed(interaction).setError("Wait until `fight` will ended!").send();
+      if (client.ops.shop.has(interaction.user.id)) return embed(interaction).setError("Подожди пока `магазин` закончится!").send();
+      if (client.ops.GLOBAL_MENU_COOLDOWN.has(interaction.user.id)) return embed(interaction).setError("Подожди пока меню закроется!").send();
 
       if ( client.ops.GLOBAL_COOLDOWN_SET.has(interaction.user.id) ) return;
       client.ops.GLOBAL_COOLDOWN_SET.add(interaction.user.id);
       setTimeout(() => client.ops.GLOBAL_COOLDOWN_SET.delete(interaction.user.id), config.GLOBAL_COOLDOWN);
 
-      if (commandCheck.dev && !config.DEVELOPER.includes(interaction.user.id)) return embed(interaction).setError("This command is not available for you!").send();
+      if (commandCheck.dev && !config.DEVELOPER.includes(interaction.user.id)) return embed(interaction).setError("Эта команда недоступна для тебя!").send();
 
-      if (commandCheck.permissions && !interaction.member.permissions.has(commandCheck.permissions)) return embed(interaction).setError("You don't have enough permissions!").send("reply", true);
+      if (commandCheck.permissions && !interaction.member.permissions.has(commandCheck.permissions)) return embed(interaction).setError("У тебя недостаточно прав!").send("reply", true);
 
       if(!cooldowns.has(commandCheck.name)) {
 	       cooldowns.set(commandCheck.name, new Collection());
@@ -49,7 +49,7 @@ module.exports = {
       	const expire = time_stamps.get(interaction.user.id) + cooldownAmount;
       	if (currentTime < expire) {
         	const time = (expire - currentTime) / 1000;
-          embed(interaction).setError("You are in cooldown for this command!"+ ` (${time.toFixed(1)} sec.)`).send("reply", true);
+          embed(interaction).setError("Ты в кулдауне!"+ ` (${time.toFixed(1)} сек.)`).send("reply", true);
         	return;
       	}
       }
@@ -57,7 +57,13 @@ module.exports = {
       time_stamps.set(interaction.user.id, currentTime);
       setTimeout(() => time_stamps.delete(interaction.user.id), cooldownAmount);
 
+      const errEmb = new Discord.MessageEmbed()
+      .setColor("#ff0000")
+      .setTitle("Ошибка!")
+      .setDescription("Эта кнопка не доступна для тебя!");
+
       const DATA = {
+        errEmb,
         heroes,
         weapons,
         rewards,
