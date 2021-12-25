@@ -15,6 +15,17 @@ const obj = {
   MAX_BAG_COUNT: 30,
   FIGHT_APPLE_WIN: [10, 30],
   FIGHT_COOLDOWN: 15 * 60 * 1000,
+  CHANGE: {
+    toMoney: 100,
+    toApple: 25
+  },
+  CREDITS: {
+    basic: {
+      money: 100,
+      rub: 50
+    }
+  },
+  DONATE_LINK: "https://www.donationalerts.com/r/adanadiscord",
 };
 
 module.exports = obj;
