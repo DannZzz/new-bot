@@ -16,7 +16,7 @@ module.exports = {
   run: async (client, int, Data) => {
     const { Discord, F, util, embed, db, emoji, config } = Data;
 
-    const member = int.options.getMember("member") || int.member;
+    const member = int.options.getMember("участник") || int.member;
 
     const data = await db.findOrCreate("profile", member.id);
 
@@ -27,7 +27,7 @@ module.exports = {
 
     const main = F.getFinalHeroData(mainHero, mainHero.items || []);
 
-   
+
 
 
 
@@ -68,7 +68,7 @@ module.exports = {
 
     if (boolean) {
       const coll = await msg.createMessageComponentCollector({
-        filter: (i) => { 
+        filter: (i) => {
         if (
         buttonToStart.customId === i.customId &&
         ids.includes(i.user.id)) {
@@ -78,10 +78,10 @@ module.exports = {
               .setColor("#ff0000")
               .setTitle("Ошибка!")
               .setDescription("Эта кнопка недоступна для вас!")
-              
+
             return i.reply({embeds: [intEmbed], ephemeral: true})
         }
-            
+
       },
       time: 30000
       });
@@ -121,7 +121,7 @@ module.exports = {
           embToArr.setThumbnail(`attachment://${heroObj.name.split(" ").join("")}.gif`)
 
           embeds.push(embToArr);
-        } 
+        }
 
         const b1 = new Discord.MessageButton()
         .setCustomId("myheroesleft")
@@ -139,7 +139,7 @@ module.exports = {
         .setStyle("PRIMARY")
 
 
-        
+
         const pages = embeds;
         const timeout = 30000;
         const buttonList = [b1, b2, b3];
@@ -151,7 +151,7 @@ module.exports = {
           components: [row], files: [pages[page].Attachment],fetchReply: true,
         });
 
-            
+
         const filter = (i) => { if (
           (buttonList.map(b => b.customId).includes(i.customId)) &&
           ids.includes(i.user.id)) {
@@ -161,10 +161,10 @@ module.exports = {
                 .setColor("#ff0000")
                 .setTitle("Ошибка!")
                 .setDescription("Эта кнопка недоступна для вас!")
-                
+
               return i.followUp({embeds: [intEmbed], ephemeral: true})
           }
-              
+
         };
 
         const collector = await curPage.createMessageComponentCollector({
@@ -197,7 +197,7 @@ module.exports = {
               break;
           }
 
-          if (tryMe){     
+          if (tryMe){
             curPage.removeAttachments();
             await i.editReply({
               embeds: [pages[page].setFooter(`${page + 1} / ${pages.length}`)],
@@ -223,7 +223,7 @@ module.exports = {
 
       })
 
-      
+
     }
 
   }

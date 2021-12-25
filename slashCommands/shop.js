@@ -19,13 +19,13 @@ module.exports = {
 		const getSubcommand = int.options.getSubcommand();
 
 		const obj = {
-			"heroes": async function () {
+			"герои": async function () {
 				client.ops.shop.add(int.user.id);
 				let arr = []
 				for (let heroObj of heroes) {
 					const bonuses = [];
 					for (let item of bonusArr) {
-						bonuses.push(`${emoji[item]} ${F.firstUpperCase(item)}: \`${heroObj[item]}\``)	
+						bonuses.push(`${emoji[item]} ${F.firstUpperCase(item)}: \`${heroObj[item]}\``)
 					}
 
 					const toAdd = embed(int)
@@ -73,7 +73,7 @@ module.exports = {
 			    const pages = arr;
 			    const timeout = 30000;
 			    const buttonList = [b1, b2, b3];
-			    
+
 			    const row = new Discord.MessageActionRow().addComponents(buttonList);
 
 			    const curPage = await interaction.reply({
@@ -81,7 +81,7 @@ module.exports = {
 			      components: [row], files: [pages[page].Attachment],fetchReply: true,
 			    });
 
-			    
+
 			    const filter = (i) => { if (
 			      (buttonList.map(b => b.customId).includes(i.customId)) &&
 			      ids.includes(i.user.id)) {
@@ -91,10 +91,10 @@ module.exports = {
 			            .setColor("#ff0000")
 			            .setTitle("Ошибка!")
 			            .setDescription("Эта кнопка недоступна для вас!")
-			          
+
 			          return i.reply({embeds: [intEmbed], ephemeral: true})
 			      }
-			        
+
 			    };
 
 			    const collector = await curPage.createMessageComponentCollector({
@@ -142,7 +142,7 @@ module.exports = {
 				          break;
 			      	}
 			      	if (tryMe){
-				      	
+
 				      	curPage.removeAttachments();
 				      	await i.editReply({
 				      	  embeds: [pages[page].setFooter(`${page + 1} / ${pages.length}`)],
@@ -166,12 +166,27 @@ module.exports = {
 			    });
 
 			    return curPage;
+			},
+			"кредиты": async function () {
+				embed(int)
+				.setAuthor("Магазин кредитов!")
+				.setText(stripIndents`
+					Используй команду \`обмен\` для обмена валютой!
+					${emoji.apple}\`${util.formatNumber(config.CHANGE.toMoney)}\` = ${emoji.coin}\`1\`
+					${emoji.coin}\`1\` = ${emoji.apple}\`${util.formatNumber(config.CHANGE.toApple)}\`
+
+					А так же донатик!
+					**${emoji.coin}[${util.formatNumber(config.CREDITS.basic.money)} = ${util.formatNumber(config.CREDITS.basic.rub)}₽](${config.DONATE_LINK})**
+				`)
+				.setFooter("Не забудь указать айди(ID)!")
+				.send();
 			}
 		}
 
+
 		obj[getSubcommand]()
 
-		
+
 
 	}
 }
