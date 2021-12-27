@@ -92,7 +92,7 @@ module.exports = {
 
 function response(msg) {
   const randInt = util.random(0, 100);
-  if (randInt > 25) return;
+  if (randInt > 50) return;
   const cooldown = respMap.get(msg.guild.id);
   console.log(cooldown);
   if (cooldown && cooldown > new Date()) return;
