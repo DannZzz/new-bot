@@ -100,10 +100,11 @@ function response(msg) {
 
   const content = msg.content;
   const capsed = msg.content.toUpperCase();
+  const mained = capsed.toLowerCase();
 
   const toSendCapped = util.random(1, 100) > 50 ? true : false;
 
-  if (capsed === content && !content.startsWith("<")) {
+  if ( capsed === content && mained !== content && !content.startsWith("<")  && !content.startsWith(":") && msg.content && msg.content.length > 4 && isNaN(msg.content) ) {
     respMap.set(msg.guild.id, new Date(Date.now() + 5000));
     msg.channel.send(caps[Math.floor(Math.random() * caps.length)]);
     return
