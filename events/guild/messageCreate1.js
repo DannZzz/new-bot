@@ -3,8 +3,13 @@ const translateAPI = require("@iamtraction/google-translate");
 const embed = require("dann-embed");
 const util = require("dann-util");
 const Discord = require("discord.js");
+const { resp, caps } = require("../../JSON/responses");
+const db = require("../../utils/db");
+const magicStart = ['адана рифмуй']
 
 let prefix = "a!";
+
+const respMap = new Map();
 
 const q1 = new Map();
 const q2 = new Map();
@@ -15,8 +20,27 @@ module.exports = {
   run: async (client, msg) => {
     let args = msg.content.slice(prefix.length).trim().split(/ +/g);
     let cmd = args.shift().toLowerCase();
+    if (msg.author.bot || msg.channel.type !== "GUILD_TEXT") return;
 
-    if (!msg.content.startsWith(prefix.toLowerCase())) return;
+    if (magicStart.includes(msg.content.toLowerCase())) {
+      if (msg.author.id !== msg.guild.ownerId) return;
+      const data1 = await db.findOrCreate("server", msg.guild.id);
+      if (!data1.magic) {
+        data1.magic = true;
+        await data1.save();
+        msg.reply("ОК БРАТ!");
+      } else {
+        data1.magic = false;
+        await data1.save();
+        msg.reply("Ладно, больше не буду...");
+      }
+    }
+
+    if (!msg.content.startsWith(prefix.toLowerCase())) {
+      const data1 = await db.findOrCreate("server", msg.guild.id);
+      if (data1.magic) response(msg);
+      return;
+    };
 
     let toLang = "ru";
 
@@ -64,4 +88,41 @@ module.exports = {
     }
 
   }
+}
+
+function response(msg) {
+  const randInt = util.random(0, 100);
+  if (randInt > 25) return;
+  const cooldown = respMap.get(msg.guild.id);
+  console.log(cooldown);
+  if (cooldown && cooldown > new Date()) return;
+
+
+  const content = msg.content;
+  const capsed = msg.content.toUpperCase();
+
+  const toSendCapped = util.random(1, 100) > 50 ? true : false;
+
+  if (capsed === content && !content.startsWith("<")) {
+    respMap.set(msg.guild.id, new Date(Date.now() + 5000));
+    msg.channel.send(caps[Math.floor(Math.random() * caps.length)]);
+    return
+  } else {
+    let done = false;
+      for (let key in resp) {
+        if (content.toLowerCase().search(key) >= 0) {
+          const toSend = resp[key][[Math.floor(Math.random() * resp[key].length)]]
+          msg.channel.send(toSendCapped ? toSend.toUpperCase() : toSend);
+          done = true;
+          break;
+        }
+      }
+
+      if (done) {
+        respMap.set(msg.guild.id, new Date(Date.now() + 5000));
+      }
+
+      return;
+  }
+
 }
