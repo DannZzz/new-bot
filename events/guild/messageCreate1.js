@@ -109,8 +109,9 @@ function response(msg) {
     return
   } else {
     let done = false;
+    const arr = content.toLowerCase().trim().split(/ +/g)
       for (let key in resp) {
-        if (content.toLowerCase().search(key) >= 0) {
+        if (arr.includes(key)) {
           const toSend = resp[key][[Math.floor(Math.random() * resp[key].length)]]
           msg.channel.send(toSendCapped ? toSend.toUpperCase() : toSend);
           done = true;
