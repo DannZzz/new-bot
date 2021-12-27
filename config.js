@@ -9,7 +9,7 @@ const obj = {
   ADMIN,
   GLOBAL_COOLDOWN: 1500,
   MAIN_COLOR: "#ffffff",
-  CLIENT_STATUS: "Slash | Dann#1000",
+  CLIENT_STATUS: "/профиль | Dann#1000",
   SLASH_GUILD: false, // or array of guild ids
   DEFAULT_ITEM_COUNT: 3,
   MAX_BAG_COUNT: 30,
