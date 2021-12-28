@@ -3,9 +3,10 @@ const translateAPI = require("@iamtraction/google-translate");
 const embed = require("dann-embed");
 const util = require("dann-util");
 const Discord = require("discord.js");
-const { resp, caps } = require("../../JSON/responses");
+const { resp, caps, adana } = require("../../JSON/responses");
 const db = require("../../utils/db");
 const magicStart = ['адана рифмуй']
+const adananames = ["адана", "адану", "аданы", "адане", "adana"];
 
 let prefix = "a!";
 
@@ -21,6 +22,11 @@ module.exports = {
     let args = msg.content.slice(prefix.length).trim().split(/ +/g);
     let cmd = args.shift().toLowerCase();
     if (msg.author.bot || msg.channel.type !== "GUILD_TEXT") return;
+
+    if (adananames.includes(msg.content.toLowerCase())) {
+      const toSend = adana[Math.floor(Math.random() * adana.length)];
+      return msg.channel.send(toSend);
+    }
 
     if (magicStart.includes(msg.content.toLowerCase())) {
       if (msg.author.id !== msg.guild.ownerId) return;
