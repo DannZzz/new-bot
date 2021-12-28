@@ -25,7 +25,7 @@ module.exports = {
 
     const checkingName = msg.content.toLowerCase().trim().split(/ +/g);
     const filtered = checkingName.filter(message => adananames.includes(message));
-    if (filtered && filtered.length > 0) {
+    if (filtered && filtered.length > 0 && !magicStart.includes(msg.content.toLowerCase())) {
       const toSend = adana[Math.floor(Math.random() * adana.length)];
       return msg.channel.send(toSend);
     }
