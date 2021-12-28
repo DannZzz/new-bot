@@ -23,7 +23,9 @@ module.exports = {
     let cmd = args.shift().toLowerCase();
     if (msg.author.bot || msg.channel.type !== "GUILD_TEXT") return;
 
-    if (adananames.includes(msg.content.toLowerCase())) {
+    const checkingName = msg.content.toLowerCase().trim().split(/ +/g);
+    const filtered = checkingName.filter(message => adananames.includes(message));
+    if (filtered && filtered.length > 0) {
       const toSend = adana[Math.floor(Math.random() * adana.length)];
       return msg.channel.send(toSend);
     }
