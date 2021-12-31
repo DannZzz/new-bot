@@ -1,14 +1,87 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const fs = require("fs");
+const { stripIndents } = require("common-tags");
 
 module.exports = {
   name: "help",
   category: 3,
   data: new SlashCommandBuilder()
   .setName("хелп")
-  .setDescription("Хелп команда, описания всех команд."),
+  .setDescription("Хелп команда, описания всех команд.")
+  .addStringOption(o => o
+    .setName("команда")
+    .setDescription("Информация о команде.")
+    .setRequired(true)
+  ),
   run: async (client, int, Data) => {
-    const { config, emoij, embed, F, Discord, errEmb } = Data;
+    const { config, emoji, embed, F, Discord, errEmb, serverData } = Data;
+
+    const cmdName = (int.options.getString("команда")).toLowerCase();
+
+      if (cmdName) {
+      const cmd = client.slashCommands.find(c => c.data.name === cmdName);
+      if (!cmd) return embed(int).setError(`Команда **${cmdName}** не найдена.`).send();
+
+      const optionTypes = {
+        "1": "Подкоманда",
+        "2": "Подкоманда",
+        "3": "Текст",
+        "4": "Число",
+        "5": "Да/Нет",
+        "6": "Пользователь Дискорда",
+        "7": "Канал",
+        "8": "Роль",
+        "10": "Число"
+      }
+
+      const data = cmd.data;
+      let options;
+      if (data.options && data.options.length > 0) {
+        options = data.options.map((obj, index) => {
+          return `${index+1}. **${obj.name}** - ${optionTypes[obj.type + ""]}\n${obj.required ? emoji.check : emoji.cross}└ ${obj.description}`;
+        })
+      }
+      var commandInGuild = false;
+      if (serverData.disabledCommands) {
+        commandInGuild = serverData.disabledCommands[cmd.name];
+      }
+
+      let disabledRoles, disabledChannels;
+
+      if (commandInGuild) {
+        if (commandInGuild.disabledChannels && commandInGuild.disabledChannels.length > 0) {
+          disabledChannels = commandInGuild.disabledChannels.map(channelId => {
+            const checkData = int.guild.channels.cache.get(channelId)
+            if (checkData) return checkData;
+          });
+        }
+        if (commandInGuild.disabledRoles && commandInGuild.disabledRoles.length > 0) {
+          disabledRoles = commandInGuild.disabledRoles.map(roleId => {
+            const checkData = int.guild.roles.cache.get(roleId)
+            if (checkData) return checkData;
+          });
+        }
+      }
+
+      embed(int)
+      .setAuthor("📑 Информация о команде")
+      .setText(stripIndents`
+        **${cmd.data.name}** — ${data.description || "Нет описания"}
+
+        ${emoji.check} - Обязательный параметр
+        ${emoji.cross} - Необязательный параметр
+      `)
+      .addField("# Параметры", stripIndents`
+        ${options && options.length > 0 ? options.join("\n") : "Не найдены"}
+      `)
+      .addField("Глобально отключена:", `${commandInGuild && commandInGuild.globalDisabled === true ? `Да` : `Нет`}`)
+      .addField("Отключённые каналы:", `${disabledChannels && disabledChannels.length > 0 ? `${disabledChannels.join(", ")}` : `Не найдены`}`)
+      .addField("Отключённые роли:", `${disabledRoles && disabledRoles.length > 0 ? `${disabledRoles.join(", ")}` : `Не найдены`}`)
+      .send();
+
+      return;
+    }
+
     let embeds = [];
     const categories = {
       "2": "Административные",
@@ -48,7 +121,7 @@ module.exports = {
         value: "" + index,
         emoji: categoriesEmojis["" + index]
       });
-      mainEmbed.addField(categories["" + index], textNames.join(", "))
+      mainEmbed.addField(`${categoriesEmojis["" + index]} ${categories["" + index]}`, textNames.join(", "))
       embeds.push(embed(int).setAuthor(categories["" + index]).setText(textedCommands.join("\n")))
     }
 

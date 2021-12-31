@@ -5,22 +5,22 @@ module.exports = {
   category: 4,
   data: new SlashCommandBuilder()
     .setName("обмен")
-    .setDescription("Обменивать валюту!")
+    .setDescription("Обменивать валюту.")
     .addSubcommand(cmd => cmd
       .setName("яблоки")
-      .setDescription("Обменять яблоки на деньги!")
+      .setDescription("Обменять яблоки на деньги.")
       .addNumberOption(o => o
         .setName("количество")
-        .setDescription("Количество яблок!")
+        .setDescription("Количество яблок.")
         .setRequired(true)
       )
     )
     .addSubcommand(cmd => cmd
       .setName("деньги")
-      .setDescription("Обменять деньги на яблоки!")
+      .setDescription("Обменять деньги на яблоки.")
       .addNumberOption(o => o
         .setName("количество")
-        .setDescription("Количество денег!")
+        .setDescription("Количество денег.")
         .setRequired(true)
       )
     ),

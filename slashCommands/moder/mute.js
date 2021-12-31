@@ -6,10 +6,10 @@ module.exports = {
   category: 1,
   data: new SlashCommandBuilder()
   .setName("мьют")
-  .setDescription("Замьютить участника на время!")
+  .setDescription("Замьютить участника на время.")
   .addUserOption(o => o
     .setName("участник")
-    .setDescription("Участник сервера!")
+    .setDescription("Участник сервера.")
     .setRequired(true)
   )
   .addStringOption(o => o
@@ -18,7 +18,7 @@ module.exports = {
   )
   .addStringOption(o => o
     .setName("причина")
-    .setDescription("Причина мьюта!")
+    .setDescription("Причина мьюта.")
   ),
   botPermissions: ["MODERATE_MEMBERS"],
   run: async (client, int, Data) => {

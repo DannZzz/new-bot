@@ -7,9 +7,9 @@ module.exports = {
   category: 4,
   data: new SlashCommandBuilder()
   .setName("купить")
-  .setDescription("Купить предмет!")
+  .setDescription("Купить предмет.")
   .addNumberOption(option => option.setName("индекс")
-    .setDescription("Индекс предмета!")
+    .setDescription("Индекс предмета.")
     .setRequired(true)),
   run: async (client, int, Data) => {
     const { db, emoji, embed, config, F, util, weapons } = Data;

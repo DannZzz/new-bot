@@ -5,7 +5,7 @@ module.exports = {
   category: 1,
   data: new SlashCommandBuilder()
   .setName("предупреждать")
-  .setDescription("Предупреждать участника подумать о своём поведений!")
+  .setDescription("Предупреждать участника подумать о своём поведений.")
   .addUserOption(o => o
     .setName("участник")
     .setDescription("Участник сервера.")

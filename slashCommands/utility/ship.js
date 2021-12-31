@@ -6,13 +6,13 @@ module.exports = {
   category: 5,
   data: new SlashCommandBuilder()
   	.setName('шип')
-  	.setDescription('Шиппинг с участниками или с предметами!')
+  	.setDescription('Шиппинг с участниками или с предметами.')
   	.addUserOption(option =>
   		option.setName('участник')
-  			.setDescription('Участник сервера!'))
+  			.setDescription('Участник сервера.'))
     .addStringOption(option =>
       option.setName("предмет")
-        .setDescription("Какой-то предмет!")),
+        .setDescription("Какой-то предмет.")),
   run: async (client, int, Data) => {
     const { Discord, embed, util } = Data;
 

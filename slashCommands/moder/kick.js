@@ -6,15 +6,15 @@ module.exports = {
   category: 1,
   data: new SlashCommandBuilder()
   .setName("выгнать")
-  .setDescription("Выгнать участника из сервера!")
+  .setDescription("Выгнать участника из сервера.")
   .addUserOption(o => o
     .setName("участник")
-    .setDescription("Участник сервера!")
+    .setDescription("Участник сервера.")
     .setRequired(true)
   )
   .addStringOption(o => o
     .setName("причина")
-    .setDescription("Причина кика!")
+    .setDescription("Причина кика.")
   ),
   botPermissions: ["KICK_MEMBERS"],
   run: async (client, int, Data) => {

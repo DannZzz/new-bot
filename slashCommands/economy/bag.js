@@ -7,7 +7,7 @@ module.exports = {
   category: 4,
   data: new SlashCommandBuilder()
   .setName("сумка")
-  .setDescription("Твоя сумка предметов!!"),
+  .setDescription("Твоя сумка предметов."),
   run: async (client, int, Data) => {
     const { db, config, emoji, weapons, embed, util, F } = Data;
 

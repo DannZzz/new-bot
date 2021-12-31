@@ -5,15 +5,15 @@ module.exports = {
   category: 4,
   data: new SlashCommandBuilder()
     .setName("перевод")
-    .setDescription("Передать яблоки, другому участнику!")
+    .setDescription("Передать яблоки, другому участнику.")
     .addUserOption(o => o
       .setName("участник")
-      .setDescription("Участник сервера, которому нужно передавать яблоки!")
+      .setDescription("Участник сервера, которому нужно передавать яблоки.")
       .setRequired(true)
     )
     .addNumberOption(o => o
       .setName("количество")
-      .setDescription("Количество яблок!")
+      .setDescription("Количество яблок.")
       .setRequired(true)
     ),
   cooldown: 5,

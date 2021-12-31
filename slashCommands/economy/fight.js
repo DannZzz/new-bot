@@ -6,7 +6,7 @@ module.exports = {
   category: 4,
   data: new SlashCommandBuilder()
   .setName("бой")
-  .setDescription("Начать бой!"),
+  .setDescription("Начать бой."),
   cooldown: 15,
   run: async (client, int, Data) => {
     const { weapons, embed, util, F, db, emoji, config, heroes, Discord } = Data;

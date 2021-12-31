@@ -6,7 +6,7 @@ module.exports = {
   category: 5,
   data: new SlashCommandBuilder()
   	.setName('картинка')
-  	.setDescription('Изменять аватарки участников!')
+  	.setDescription('Изменять аватарки участников.')
     .addStringOption(o => o
       .setName("фильтр")
       .setRequired(true)

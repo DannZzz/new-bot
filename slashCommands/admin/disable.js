@@ -52,6 +52,7 @@ module.exports = {
     } else if (channel) {
       channel = int.guild.channels.cache.get(channel.id);
       if (channel) {
+        if (channel.type !== "GUILD_TEXT") return embed(int).setError("Укажи текстовый канал!").send();
         if (!serverData.disabledCommands[check.name].disabledChannels) {
           await db.models.server.updateOne({_id: int.guild.id}, {$set: {[`disabledCommands.${check.name}.disabledChannels`]: [channel.id]}})
         } else if (serverData.disabledCommands[check.name].disabledChannels.includes(channel.id)) {

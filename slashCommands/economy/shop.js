@@ -13,12 +13,12 @@ module.exports = {
 	category: 4,
 	data: new SlashCommandBuilder()
 	.setName("магазин")
-	.setDescription("Наш магазин!")
+	.setDescription("Наши магазины.")
 	.addSubcommand(cmd => cmd.setName("герои")
-		.setDescription("Магазин героев!")
+		.setDescription("Магазин героев.")
 	)
 	.addSubcommand(cmd => cmd.setName("кредиты")
-		.setDescription("Магазин кредитов!")),
+		.setDescription("Магазин кредитов.")),
 
 	run: async (client, int, Data) => {
 

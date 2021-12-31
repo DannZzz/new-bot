@@ -7,13 +7,13 @@ module.exports = {
   category: 4,
   data: new SlashCommandBuilder()
   .setName("экипировать")
-  .setDescription("Экипировать предмет на героя!")
+  .setDescription("Экипировать предмет на героя.")
   .addNumberOption(option => option.setName("индекс")
-  .setDescription("Индекс предмета!")
+  .setDescription("Индекс предмета.")
   .setRequired(true))
   .addBooleanOption( option => option
   .setName("снять")
-  .setDescription("Выбирай True если хочешь снять предмет с героя!")
+  .setDescription("Выбирай True если хочешь снять предмет с героя.")
   ),
   run: async (client, int, Data) => {
     const { weapons, db, emoji, config, embed } = Data;

@@ -10,10 +10,10 @@ module.exports = {
   category: 4,
   data: new SlashCommandBuilder()
   .setName("профиль")
-  .setDescription("Профиль пользователя!")
+  .setDescription("Профиль пользователя.")
   .addUserOption(option =>
     option.setName("участник")
-    .setDescription("Смотреть профиль участника сервера")),
+    .setDescription("Смотреть профиль участника сервера.")),
 
   run: async (client, int, Data) => {
     const { Discord, F, util, embed, db, emoji, config } = Data;
