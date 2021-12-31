@@ -4,18 +4,35 @@ const { TOKEN, SLASH_GUILD, APPLICATION_ID } = require('../config');
 const fs = require('fs');
 
 module.exports = async (client) => {
-  const commandDir = fs.readdirSync("./slashCommands/").filter(f => f.endsWith(".js"));
-
   const commands = [];
+  
+  client.slashCategories.forEach(category => {
+    const commandDir = fs.readdirSync(`./slashCommands/${category}`).filter(f => f.endsWith(".js"));
 
-  for (file of commandDir) {
-    const command = require(`../slashCommands/${file}`);
-    client.slashCommands.set(command.data.name, command);
-  	commands.push(command.data.toJSON());
-  }
+
+    for (file of commandDir) {
+      const command = require(`../slashCommands/${category}/${file}`);
+      client.slashCommands.set(command.data.name, command);
+    	commands.push(command.data.toJSON());
+    }
+  })
+
 
   const rest = new REST({ version: '9' }).setToken(TOKEN);
-  
+// await SLASH_GUILD.forEach(async guildId => {
+//   await rest.get(Routes.applicationGuildCommands(APPLICATION_ID, guildId))
+//     .then(data => {
+//         const promises = [];
+//         for (const command of data) {
+//
+//           const deleteUrl = `${Routes.applicationGuildCommands(APPLICATION_ID, guildId)}/${command.id}`;
+//           promises.push(rest.delete(deleteUrl));
+//
+//         }
+//         return Promise.all(promises);
+//     });
+// });
+
   (async () => {
   	try {
   		console.log('Started refreshing application (/) commands.');

@@ -324,6 +324,9 @@ const obj = {
     const reduced = values.reduce((aggr, number) => aggr + number, 0);
     return (reduced / values.length).toFixed(1);
   },
+  timestamp: function (add = 0, date = Date.now()) {
+    return Math.round((date + add) / 1000)
+  },
   bonusCollector: function (heroObj = {}, formatter = false) {
     const bonuses = [];
     for (let item of bonusArr) {
@@ -374,9 +377,9 @@ const obj = {
         return true;
       } else if (!ids.includes(i.user.id)) {
         const intEmbed = new Discord.MessageEmbed()
-            .setColor("#ff0000")
-            .setTitle("Error!")
-            .setDescription("This button can not work for you!")
+        .setColor("#ff0000")
+        .setTitle("Ошибка!")
+        .setDescription("Эта кнопка не доступна для тебя!");
 
           return i.reply({embeds: [intEmbed], ephemeral: true})
       }
@@ -408,10 +411,105 @@ const obj = {
     });
 
     collector.on("end", () => {
-      if (!curPage.deleted) {
-        const disabledRow = new MessageActionRow().addComponents(
+      if (curPage) {
+        const disabledRow = new Discord.MessageActionRow().addComponents(
           buttonList[0].setDisabled(true),
           buttonList[1].setDisabled(true)
+        );
+        curPage.edit({
+          embeds: [pages[page].setFooter(`${page + 1} / ${pages.length}`)],
+          components: [disabledRow],
+        });
+      }
+    });
+
+    return curPage;
+  },
+  async arrowPages(interaction, pages, timeout = 120000, ids) {
+    //if (!msg && !msg.channel) throw new Error("Channel is inaccessible.");
+    if (!pages) throw new Error("Pages are not given.");
+    let page = 0;
+
+    const b1 = new Discord.MessageButton()
+    .setEmoji(emoji.leftarrow)
+    .setCustomId("arrowPageLeft")
+    .setStyle("SECONDARY")
+
+    const b2 = new Discord.MessageButton()
+    .setEmoji(emoji.rightarrow)
+    .setCustomId("arrowPageRight")
+    .setStyle("SECONDARY")
+
+    const b3 = new Discord.MessageButton()
+    .setEmoji(emoji.cancel)
+    .setCustomId("arrowPageClose")
+    .setStyle("DANGER")
+
+    if (pages.length === 1) {
+      b1.setDisabled(true);
+      b2.setDisabled(true);
+    }
+    let buttonList = [b1, b2, b3];
+    const row = new Discord.MessageActionRow().addComponents(buttonList);
+
+    const curPage = await interaction.reply({
+      embeds: [pages[page].setFooter(`${page + 1} / ${pages.length}`)],
+      components: [row],fetchReply: true,
+    });
+
+
+    const filter = (i) => { if (
+      (i.customId === buttonList[0].customId ||
+      i.customId === buttonList[1].customId ||
+      i.customId === buttonList[2].customId) &&
+      ids.includes(i.user.id)) {
+        return true;
+      } else if (!ids.includes(i.user.id)) {
+        const intEmbed = new Discord.MessageEmbed()
+        .setColor("#ff0000")
+        .setTitle("Ошибка!")
+        .setDescription("Эта кнопка не доступна для тебя!");
+
+          return i.reply({embeds: [intEmbed], ephemeral: true})
+      }
+
+    };
+
+    const collector = await curPage.createMessageComponentCollector({
+      filter,
+      time: timeout,
+    });
+    let toClose = false;
+    collector.on("collect", async (i) => {
+      await i.deferUpdate();
+      switch (i.customId) {
+        case buttonList[0].customId:
+          page = page > 0 ? --page : pages.length - 1;
+          break;
+        case buttonList[1].customId:
+          page = page + 1 < pages.length ? ++page : 0;
+          break;
+        case buttonList[2].customId:
+          toClose = true;
+          curPage.delete();
+          collector.stop();
+          return;
+        default:
+          break;
+      }
+      await i.editReply({
+        embeds: [pages[page].setFooter(`${page + 1} / ${pages.length}`)],
+        components: [row],
+      }).catch(()=>interaction.react('❌'));
+      collector.resetTimer();
+    });
+
+    collector.on("end", () => {
+      if (curPage && !toClose) {
+        const disabledRow = new Discord.MessageActionRow().addComponents(
+          buttonList[0].setDisabled(true),
+          buttonList[1].setDisabled(true),
+          buttonList[2].setDisabled(true),
         );
         curPage.edit({
           embeds: [pages[page].setFooter(`${page + 1} / ${pages.length}`)],

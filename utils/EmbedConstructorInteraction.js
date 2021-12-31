@@ -1,9 +1,10 @@
 const { MessageEmbed } = require("discord.js");
 const { MAIN_COLOR } = require("../config");
+const { check, cross } = require('../assets/emojis');
 
 const colors = {
-	red: "#ff0000",
-  green: "#00ff00",
+	red: "#FF5440",
+  green: "#7A912A",
   none: "#2f3136"
 };
 
@@ -21,12 +22,12 @@ class EmbedConstructor extends MessageEmbed {
     return this;
   }
   setSuccess(description = "") {
-    this.setDescription(description);
+    this.setDescription(`${check} | ${description}`);
     this.setColor(colors.green);
     return this;
   }
   setError(description = "") {
-    this.setDescription(description);
+    this.setDescription(`${cross} | ${description}`);
     this.setColor(colors.red);
     return this;
   }

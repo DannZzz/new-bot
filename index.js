@@ -20,6 +20,7 @@ client.ops = {
 
 client.events = fs.readdirSync("./events/");
 client.categories = fs.readdirSync("./commands/");
+client.slashCategories = fs.readdirSync("./slashCommands/");
 
 ["command", "event", "registerSlash"].forEach( handler => require(`./handlers/${handler}`)(client) );
 
@@ -36,7 +37,7 @@ setInterval(async () => {
   var timeTwo = new Date().toLocaleTimeString("ru-RU", {timeZone: "Europe/Moscow"}).substring(0, 2);
   // if there's a date in localstorage and it's equal to the above:
   // inferring a day has yet to pass since both dates are equal.
-  
+
   // let botTime = await botData.findOne({name: "main"})
   // if (!botTime) {
   //   let dat = await botData.create({
