@@ -7,6 +7,8 @@ const { resp, caps, adana } = require("../../JSON/responses");
 const db = require("../../utils/db");
 const magicStart = ['адана рифмуй']
 const adananames = ["адана", "адану", "аданы", "адане", "adana"];
+const open = ["адана открой", "adana unlock"];
+const close = ["адана закрой", "adana lock"];
 
 let prefix = "a!";
 
@@ -25,13 +27,23 @@ module.exports = {
 
     const checkingName = msg.content.toLowerCase().trim().split(/ +/g);
     const filtered = checkingName.filter(message => adananames.includes(message));
-    if (filtered && filtered.length > 0 && !magicStart.includes(msg.content.toLowerCase())) {
+    if (filtered && filtered.length > 0 && !magicStart.includes(msg.content.toLowerCase()) && !open.includes(msg.content.toLowerCase()) && !close.includes(msg.content.toLowerCase())) {
       const toSend = adana[Math.floor(Math.random() * adana.length)];
       return msg.channel.send(toSend);
     }
 
+    if (close.includes(msg.content.toLowerCase())) {
+      if (!msg.member.permissions.has("MANAGE_CHANNELS")) return embed(msg).setError("У тебя недостаточно прав").send();
+      msg.channel.permissionOverwrites.create(msg.guild.roles.everyone, {SEND_MESSAGES: false})
+      msg.reply("Ок брат");
+    } else if (open.includes(msg.content.toLowerCase())) {
+      if (!msg.member.permissions.has("MANAGE_CHANNELS")) return embed(msg).setError("У тебя недостаточно прав").send();
+      msg.channel.permissionOverwrites.create(msg.guild.roles.everyone, {SEND_MESSAGES: null})
+      msg.reply("Ок брат");
+    }
+
     if (magicStart.includes(msg.content.toLowerCase())) {
-      if (msg.author.id !== msg.guild.ownerId) return;
+      if (!msg.member.permissions.has("ADMINISTRATOR")) return embed(msg).setError("У тебя недостаточно прав").send();
       const data1 = await db.findOrCreate("server", msg.guild.id);
       if (!data1.magic) {
         data1.magic = true;
@@ -42,6 +54,7 @@ module.exports = {
         await data1.save();
         msg.reply("Ладно, больше не буду...");
       }
+      return;
     }
 
     if (!msg.content.startsWith(prefix.toLowerCase())) {

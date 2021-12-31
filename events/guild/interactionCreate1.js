@@ -10,6 +10,7 @@ const emoji = require("../../assets/emojis");
 const rewards = require("../../rewards");
 const weapons = require("../../JSON/weapons");
 const heroes = require("../../JSON/heroes");
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 module.exports = {
   name: "interactionCreate",
@@ -25,6 +26,9 @@ module.exports = {
 
     const cooldowns = client.ops.cooldowns;
     if (commandCheck) {
+      
+      if (!checkDisabling(commandCheck.name, interaction.member, interaction.channel, serverData)) return embed(interaction).setError("Эту команду ты сейчас не можешь использовать, она может быть отключена администратором!").send("reply", true);
+      if (commandCheck.botPermissions && !interaction.guild.me.permissions.has(commandCheck.botPermissions)) return embed(interaction).setError("У меня недостаточны прав!").send();
 
       if (client.ops.shop.has(interaction.user.id)) return embed(interaction).setError("Подожди пока `магазин` закончится!").send();
       if (client.ops.GLOBAL_MENU_COOLDOWN.has(interaction.user.id)) return embed(interaction).setError("Подожди пока меню закроется!").send();
@@ -63,6 +67,7 @@ module.exports = {
       .setDescription("Эта кнопка не доступна для тебя!");
 
       const DATA = {
+        fetch,
         errEmb,
         heroes,
         weapons,
@@ -81,4 +86,14 @@ module.exports = {
 
 
   }
+}
+
+function checkDisabling (cmdName, member, channel, data) {
+  if (!data.disabledCommands) return true;
+  if (!data.disabledCommands[cmdName]) return true;
+  if (data.disabledCommands[cmdName].globalDisabled) return false;
+  if (!data.disabledCommands[cmdName].disabledChannels && !data.disabledCommands[cmdName].disabledRoles) return true;
+  if (data.disabledCommands[cmdName].disabledChannels && data.disabledCommands[cmdName].disabledChannels.includes(channel.id)) return false;
+  if (data.disabledCommands[cmdName].disabledRoles && member.roles.cache.hasAny(... data.disabledCommands[cmdName].disabledRoles) && channel.guild.ownerId !== member.id) return false;
+  return true;
 }
