@@ -11,7 +11,6 @@ module.exports = {
   .addStringOption(o => o
     .setName("команда")
     .setDescription("Информация о команде.")
-    .setRequired(true)
   ),
   run: async (client, int, Data) => {
     const { config, emoji, embed, F, Discord, errEmb, serverData } = Data;
