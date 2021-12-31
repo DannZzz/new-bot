@@ -15,10 +15,28 @@ module.exports = {
   .addStringOption(o => o
     .setName("время")
     .setDescription("Длительность мьюта. Формат: 1m, 1h, 1d, 1w")
+    .addChoice("10 минут", "10m")
+    .addChoice("30 минут", "30m")
+    .addChoice("1 час", "1h")
+    .addChoice("2 часа", "2h")
+    .addChoice("6 часов", "6h")
+    .addChoice("12 часов", "12h")
+    .addChoice("1 день", "1d")
+    .addChoice("2 дня", "2d")
+    .addChoice("1 неделя", "1w")
   )
   .addStringOption(o => o
     .setName("причина")
     .setDescription("Причина мьюта.")
+    .addChoice("Неадекватное поведение", "Неадекватное поведение")
+    .addChoice("Оскорбления", "Оскорбления")
+    .addChoice("Пиар", "Пиар")
+    .addChoice("Расизм, религизм", "Расизм, религизм")
+    .addChoice("Спам и флуд", "Спам и флуд")
+    .addChoice("Оффтоп", "Оффтоп")
+    .addChoice("Распрострaнения ссылок", "Распрострaнения ссылок")
+    .addChoice("18+ контент", "18+ контент")  
+
   ),
   botPermissions: ["MODERATE_MEMBERS"],
   run: async (client, int, Data) => {

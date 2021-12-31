@@ -19,6 +19,14 @@ module.exports = {
   .addStringOption(o => o
     .setName("причина")
     .setDescription("Причина бана!")
+    .addChoice("Неадекватное поведение", "Неадекватное поведение")
+    .addChoice("Оскорбления", "Оскорбления")
+    .addChoice("Пиар", "Пиар")
+    .addChoice("Расизм, религизм", "Расизм, религизм")
+    .addChoice("Спам и флуд", "Спам и флуд")
+    .addChoice("Оффтоп", "Оффтоп")
+    .addChoice("Распрострaнения ссылок", "Распрострaнения ссылок")
+    .addChoice("18+ контент", "18+ контент")  
   ),
   botPermissions: ["BAN_MEMBERS"],
   run: async (client, int, Data) => {
