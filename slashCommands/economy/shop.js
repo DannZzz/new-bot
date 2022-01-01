@@ -182,8 +182,10 @@ module.exports = {
 					Используй команду \`обмен\` для обмена валютой!
 					${emoji.apple}\`${util.formatNumber(config.CHANGE.toMoney)}\` = ${emoji.coin}\`1\`
 					${emoji.coin}\`1\` = ${emoji.apple}\`${util.formatNumber(config.CHANGE.toApple)}\`
+          ${emoji.token}\`${client.tokenValue}\` = ${emoji.coin}\`1\`
+          **Курс токенов (${emoji.token}) часто меняется.**
 
-					А так же донатик!
+					Приобретать доллары.
 					**${emoji.coin}[${util.formatNumber(config.CREDITS.basic.money)} = ${util.formatNumber(config.CREDITS.basic.rub)}₽](${config.DONATE_LINK})**
 				`)
 				.setFooter("Не забудь указать айди(ID)!")

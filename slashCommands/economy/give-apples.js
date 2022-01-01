@@ -11,7 +11,7 @@ module.exports = {
       .setDescription("Участник сервера, которому нужно передавать яблоки.")
       .setRequired(true)
     )
-    .addNumberOption(o => o
+    .addIntegerOption(o => o
       .setName("количество")
       .setDescription("Количество яблок.")
       .setRequired(true)
@@ -21,7 +21,7 @@ module.exports = {
     const { emoji, db, util, embed } = Data;
 
     const member = int.options.getMember("участник");
-    const amount = Math.round(int.options.getNumber("количество"));
+    const amount = Math.round(int.options.getInteger("количество"));
 
     if (member.id === int.user.id || member.user.bot) return embed(int).setError("Ляя чел, укажи другого участника!").send()
 

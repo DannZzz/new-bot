@@ -6,7 +6,7 @@ module.exports = {
   data: new SlashCommandBuilder()
   .setName("убрать-случай")
   .setDescription("Убрать предупреждение, случай по номеру.")
-  .addNumberOption(o => o
+  .addIntegerOption(o => o
     .setName("случай")
     .setDescription("Номер случая.")
     .setRequired(true)
@@ -16,7 +16,7 @@ module.exports = {
 
     const guild = int.guild;
     const user = int.user;
-    const _case = int.options.getNumber("случай");
+    const _case = int.options.getInteger("случай");
 
     let hasAllowedRole = false;
     if (serverData.moderrole && serverData.moderrole.length > 1) {

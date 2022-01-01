@@ -8,13 +8,13 @@ module.exports = {
   data: new SlashCommandBuilder()
   .setName("купить")
   .setDescription("Купить предмет.")
-  .addNumberOption(option => option.setName("индекс")
+  .addIntegerOption(option => option.setName("индекс")
     .setDescription("Индекс предмета.")
     .setRequired(true)),
   run: async (client, int, Data) => {
     const { db, emoji, embed, config, F, util, weapons } = Data;
 
-    const index = int.options.getNumber("индекс");
+    const index = int.options.getInteger("индекс");
 
     const game = await db.findOrCreate("game", int.user.id);
     const profile = await db.findOrCreate("profile", int.user.id);

@@ -45,6 +45,7 @@ module.exports = {
       .setAuthor(`Профиль — ${member.user.tag}`, member.user.displayAvatarURL({dynamic: true}))
       .addField("Баланс:", `${emoji.coin}\`${util.formatNumber(data.coins || 0)}\``)
       .addField("Яблоки:", `${emoji.apple}\`${util.formatNumber(data.apples || 0)}\``)
+      .addField("Токены:", `${emoji.token}\`${util.formatNumber(data.tokens || 0)}\``)
       .setThumbnail(`attachment://main.gif`)
       .addField("Предметы:", itemText)
       .addField(`Герой: ${character.name}\nЭпоха: \`${F.age(main.level || 1)}\`\nСила: \`${force}\``, stripIndents`${emoji.intelligence} Интеллект: \`${util.formatNumber(main.intelligence)}\`
