@@ -1,6 +1,7 @@
 module.exports = {
   coin: "<:currency:920677304529735690>",
   apple: "<:apple:921013210411319337>",
+  token: "<:token:926859980848627772>",
   check: '<:checked:926005208335663124> ',
   cross: "<:cancel1:926005208176271422>",
   attack: "<:attack:920675000896348230>",
