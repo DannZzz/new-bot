@@ -14,6 +14,13 @@ const methods = {
       await profile.updateOne({_id: id}, {$inc: { coins: round ? Math.round(amount) : amount } });
   },
 
+  tokens: async (id, amount, round = true) => {
+      await profile.updateOne({_id: id}, {$inc: {
+        tokens: round ? Math.round(amount) : amount,
+        tokensAll: Math.round(amount) > 0 ? (round ? Math.round(amount) : amount) : 0,
+      } });
+  },
+
   apples: async (id, amount, round = true) => {
       await profile.updateOne({_id: id}, {$inc: { apples: round ? Math.round(amount) : amount } });
   },

@@ -1,6 +1,7 @@
 module.exports = {
   claim: 20,
   claimApple: 100,
+  tokenDefault: 1,
   casino: {
     money1: {
       cost: 10,

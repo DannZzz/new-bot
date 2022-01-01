@@ -1,6 +1,7 @@
 const { Client, MessageEmbed, Collection } = require("discord.js");
 const config = require("./config");
 const fs = require("fs");
+const util = require("dann-util");
 
 require("./utils/database/connect")();
 
@@ -18,6 +19,7 @@ client.ops = {
   shop: new Set(),
 };
 
+client.tokenValue = 100;
 client.events = fs.readdirSync("./events/");
 client.categories = fs.readdirSync("./commands/");
 client.slashCategories = fs.readdirSync("./slashCommands/");
@@ -29,6 +31,17 @@ client.on('error',function(err){});
 process.on('unhandledRejection', error => {
   console.log('Test error:', error);
 });
+
+function changeTokenCost () {
+  let timeToChange = util.random(2, 5) * 60000;
+
+  const costToChange = util.random(10, 100);
+  client.tokenValue = costToChange;
+  timeToChange = util.random(2, 5) * 60000;
+
+  setTimeout(changeTokenCost, timeToChange);
+}
+changeTokenCost();
 
 setInterval(async () => {
   async function hasOneDayPassed() {
