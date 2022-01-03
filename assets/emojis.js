@@ -12,7 +12,7 @@ module.exports = {
   leftarrow: "<:left:925716528689721384>",
   rightarrow: "<:right:925716528916213790>",
   cancel: "<:cancel:925716528022843432>",
-  money1: "<:money1:923853335424016384>",
+  money1: "<:money1:927502745294995487>",
   money2: "<:money2:923853336288067625>",
   money3: "<:money3:923853335176568913>",
   casinoLogo: "<:casinologo:923854495681761291>",
