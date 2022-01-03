@@ -70,7 +70,7 @@ module.exports = {
 
 				const b3 = new Discord.MessageButton()
 				.setCustomId("heroesbuy")
-				.setLabel("Купить этот герой")
+				.setLabel("Купить этого герой")
 				.setStyle("PRIMARY")
 
 				let page = 0;

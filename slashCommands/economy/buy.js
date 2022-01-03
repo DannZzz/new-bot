@@ -39,7 +39,7 @@ module.exports = {
 
     if (!weaponData.cost) return embed(int).setError("Непонятная ошибка!").send();
 
-    if (profile[costType] < weaponData.cost) return embed(int).setError(`У тебя недостаточно ${emoji[costType.slice(0, costType-1)]}!`).send();
+    if (profile[costType] < weaponData.cost) return embed(int).setError(`У тебя недостаточно ${emoji[costType.slice(0, costType.length-1)]}!`).send();
 
     game.bag = [...bag, weaponData.id];
     game.save();
