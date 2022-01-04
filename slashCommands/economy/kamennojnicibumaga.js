@@ -188,7 +188,7 @@ module.exports = {
       const lastEmbed = client.dann.embed(msg).setColor(emb1.color)
       .setDescription(client.indents`
         **${int.user.username}** - ${emojiById[u1.choice]}
-        
+
         **${member.user.username}** - ${emojiById[u2.choice]}
         `);
 
@@ -201,7 +201,7 @@ module.exports = {
       } else if (u1.choice === "nojnici" && u2.choice === "stone") {
         winner = u2;
       } else if (u1.choice === "stone" && u2.choice === "nojnici") {
-        winner = u2;
+        winner = u1;
       } else if (u1.choice === "stone" && u2.choice === "bumaga") {
         winner = u2;
       } else if (u1.choice === "bumaga" && u2.choice === "stone") {
