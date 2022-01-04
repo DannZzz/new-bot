@@ -1,12 +1,12 @@
-const { Client, MessageEmbed, Collection } = require("discord.js");
+const Client = require("./utils/Client");
 const config = require("./config");
 const fs = require("fs");
 const util = require("dann-util");
 
 require("./utils/database/connect")();
 
-const client = new Client({allowedMentions: { parse: [] }, intents: ["GUILD_MEMBERS", "GUILDS", "GUILD_MESSAGES"]});
-
+const client = new Client({allowedMentions: { parse: [] }, intents: ["GUILD_MEMBERS", "GUILDS", "GUILD_MESSAGES"], token: process.env.TOKEN || config.TOKEN});
+const { Collection } = client.discord;
 client.commands = new Collection();
 client.aliases = new Collection();
 client.slashCommands = new Collection();
@@ -35,7 +35,7 @@ process.on('unhandledRejection', error => {
 function changeTokenCost () {
   let timeToChange = util.random(2, 5) * 60000;
 
-  const costToChange = util.random(10, 100);
+  const costToChange = util.random(10, 250);
   client.tokenValue = costToChange;
   timeToChange = util.random(2, 5) * 60000;
 
@@ -77,4 +77,4 @@ async function runOncePerDay(){
 runOncePerDay()
 }, 1000 * 60 * 5)
 
-client.login(process.env.TOKEN || config.TOKEN);
+client.start();
