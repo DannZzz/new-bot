@@ -210,7 +210,7 @@ module.exports = {
 
       await db.tokens(winner.id, bet * 2)
 
-      lastEmbed.setAuthor(`Победитель — ${winner === u1 ? int.user.username : member.user.username}`).addField("Выигрыш:", `${emoji.token}${util.formatNumber(bet * 2)}`).send();
+      lastEmbed.setAuthor(`Победитель — ${winner === u1 ? int.user.username : member.user.username}`).addField("Выигрыш:", `${emoji.token}\`${util.formatNumber(bet * 2)}\``).send();
 
     })
 
