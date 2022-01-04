@@ -11,11 +11,27 @@ module.exports = {
     const { embed, db, config, emoji, Discord, rewards, util } = Data;
     const indexesOfTypes = ["money1", "money2", "money3"];
     client.ops.GLOBAL_MENU_COOLDOWN.add(int.user.id);
+    const data = await db.findOrCreate("profile", int.user.id)
 
     const writeInterFace = () => {
       const emb = embed(int)
         .setAuthor(`Казино`)
-        .setTitle(emoji.casinoLogo + " Испытай удачу!\nВыбирай!");
+        .setTitle(emoji.casinoLogo + " Испытай удачу!\nВыбирай!")
+        .addField("Баланс", `${emoji.coin}\`${util.formatNumber(data.coins || 0)}\``)
+
+      indexesOfTypes.forEach(index => {
+        emb.addField(`${emoji[index]} Цена: ${emoji.coin}\`${rewards.casino[index].cost}\``, `Мин. выигрыш: ${emoji.coin}\`${rewards.casino[index].min}\`\nМакс. выигрыш: ${emoji.coin}\`${rewards.casino[index].max}\`\nШанс: ${rewards.casino[index].chance}%`)
+      });
+
+      return emb;
+    }
+
+    const writeInterFaceAsync = async () => {
+      const data = await db.findOrCreate("profile", int.user.id)
+      const emb = embed(int)
+        .setAuthor(`Казино`)
+        .setTitle(emoji.casinoLogo + " Испытай удачу!\nВыбирай!")
+        .addField("Баланс", `${emoji.coin}\`${util.formatNumber(data.coins || 0)}\``)
 
       indexesOfTypes.forEach(index => {
         emb.addField(`${emoji[index]} Цена: ${emoji.coin}\`${rewards.casino[index].cost}\``, `Мин. выигрыш: ${emoji.coin}\`${rewards.casino[index].min}\`\nМакс. выигрыш: ${emoji.coin}\`${rewards.casino[index].max}\`\nШанс: ${rewards.casino[index].chance}%`)
@@ -61,7 +77,7 @@ module.exports = {
     });
 
     collector.on("collect", async i => {
-      i.deferUpdate();
+      await i.deferUpdate();
       collector.resetTimer();
 
       const data = await db.findOrCreate("profile", int.user.id);
@@ -72,12 +88,18 @@ module.exports = {
       await db.coins(int.user.id, -selected.cost);
 
       const checkWin = util.random(0, 100);
-      if (checkWin > selected.chance) return embed(i).setError("Оу, не повезло, удача не на твоей стороне!").send("followUp");
+      if (checkWin > selected.chance) {
+        const embedToChange = await writeInterFaceAsync();
+        mainMessage.edit({embeds: [embedToChange]})
+        return embed(i).setError("Оу, не повезло, удача не на твоей стороне!").send("followUp");
+      }
 
       const reward = util.random(selected.min, selected.max);
 
       await db.coins(int.user.id, reward);
 
+      const embedToChange = await writeInterFaceAsync();
+      mainMessage.edit({embeds: [embedToChange]})
       return embed(i).setSuccess(`Еее, ты выиграл ${emoji.coin}\`${util.formatNumber(reward)}\`!`).send("followUp");
 
     })
