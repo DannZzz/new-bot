@@ -16,4 +16,5 @@ module.exports = {
   money2: "<:money2:923853336288067625>",
   money3: "<:money3:923853335176568913>",
   casinoLogo: "<:casinologo:923854495681761291>",
+  stone: "<:stone:927890294630916156>",
 }
