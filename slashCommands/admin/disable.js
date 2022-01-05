@@ -38,11 +38,11 @@ module.exports = {
     if (check.always) return embed(int).setError(`Команда **${check.data.name}** не может быть отключена.`).send();
     if (!sd.disabledCommands[check.name]) {
       sd.disabledCommands[check.name] = {};
-      sd.save();
+      await sd.save();
     }
     const serverData = await db.findOrCreate("server", int.guild.id);
     if (!role && !channel) {
-      if (serverData.disabledCommands[check.name].globalDisabled) return embed(int).setError(`Команда **${check.data.name}** уже отключена по всему серверу.`).send();
+      if (serverData.disabledCommands[check.name]?.globalDisabled) return embed(int).setError(`Команда **${check.data.name}** уже отключена по всему серверу.`).send();
       await db.models.server.updateOne({_id: int.guild.id}, {$set: {
         [`disabledCommands.${check.name}.globalDisabled`]: true,
         [`disabledCommands.${check.name}.disabledChannels`]: [],
