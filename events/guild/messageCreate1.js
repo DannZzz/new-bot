@@ -7,8 +7,8 @@ const { resp, caps, adana } = require("../../JSON/responses");
 const db = require("../../utils/db");
 const magicStart = ['адана рифмуй']
 const adananames = ["адана", "адану", "аданы", "адане", "adana"];
-const open = ["адана открой", "adana unlock"];
-const close = ["адана закрой", "adana lock"];
+const open = "открой";
+const close = "закрой";
 
 let prefix = "a!";
 
@@ -25,22 +25,38 @@ module.exports = {
     let cmd = args.shift().toLowerCase();
     if (msg.author.bot || msg.channel.type !== "GUILD_TEXT") return;
 
+    const splited = msg.content.toLowerCase().trim().split(/ +/g);
+    console.log(splited)
     const checkingName = msg.content.toLowerCase().trim().split(/ +/g);
     const filtered = checkingName.filter(message => adananames.includes(message));
-    if (filtered && filtered.length > 0 && !magicStart.includes(msg.content.toLowerCase()) && !open.includes(msg.content.toLowerCase()) && !close.includes(msg.content.toLowerCase())) {
+    if (filtered && filtered.length > 0 && !magicStart.includes(msg.content.toLowerCase()) && open !== splited[1] && close !== splited[1]) {
       const toSend = adana[Math.floor(Math.random() * adana.length)];
       return msg.channel.send(toSend);
     }
 
-    if (close.includes(msg.content.toLowerCase())) {
-      if (!msg.member.permissions.has("MANAGE_CHANNELS")) return embed(msg).setError("У тебя недостаточно прав").send();
-      msg.channel.permissionOverwrites.create(msg.guild.roles.everyone, {SEND_MESSAGES: false})
-      msg.reply("Ок брат");
-    } else if (open.includes(msg.content.toLowerCase())) {
-      if (!msg.member.permissions.has("MANAGE_CHANNELS")) return embed(msg).setError("У тебя недостаточно прав").send();
-      msg.channel.permissionOverwrites.create(msg.guild.roles.everyone, {SEND_MESSAGES: null})
-      msg.reply("Ок брат");
+    if (adananames.includes(splited[0])) {
+      if (splited[1] === close) {
+        if (!msg.member.permissions.has("ADMINISTRATOR")) return embed(msg).setError("У тебя недостаточно прав").send();
+        const data1 = await db.findOrCreate("server", msg.guild.id);
+        const channel = msg.mentions.channels.first();
+        if (!channel || !channel.isText()) return embed(msg).setError("Текстовый канал не найден!").send();
+        if (data1.magicDisabledChannels && data1.magicDisabledChannels.includes(channel.id)) return embed(msg).setError("Этот канал уже отключён от ответов.").send();
+        if (!data1.magicDisabledChannels) data1.magicDisabledChannels = [];
+        data1.magicDisabledChannels.push(channel.id);
+        await data1.save();
+        msg.reply("Ок брат");
+      } else if (splited[1] === open) {
+        if (!msg.member.permissions.has("ADMINISTRATOR")) return embed(msg).setError("У тебя недостаточно прав").send();
+        const data1 = await db.findOrCreate("server", msg.guild.id);
+        const channel = msg.mentions.channels.first() || msg.guild.channels.cache.get(splited[2]);
+        if (!channel || !channel.isText()) return embed(msg).setError("Текстовый канал не найден!").send();
+        if (!data1.magicDisabledChannels || !data1.magicDisabledChannels.includes(channel.id)) return embed(msg).setError("Этот канал и так не отключён от ответов.").send();
+        data1.magicDisabledChannels.splice(data1.magicDisabledChannels.indexOf(channel.id), 1);
+        await data1.save();
+        msg.reply("Ок брат");
+      }
     }
+
 
     if (magicStart.includes(msg.content.toLowerCase())) {
       if (!msg.member.permissions.has("ADMINISTRATOR")) return embed(msg).setError("У тебя недостаточно прав").send();
@@ -59,7 +75,9 @@ module.exports = {
 
     if (!msg.content.startsWith(prefix.toLowerCase())) {
       const data1 = await db.findOrCreate("server", msg.guild.id);
-      if (data1.magic) response(msg);
+      if (data1.magic) {
+        if (data1.magicDisabledChannels && !data1.magicDisabledChannels.includes(msg.channel.id)) response(msg);
+      }
       return;
     };
 
