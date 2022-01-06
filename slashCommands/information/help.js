@@ -109,7 +109,7 @@ module.exports = {
 
     const options = [];
 
-    const mainEmbed = embed(int).setAuthor("Вот мои команды!").setText("Они все используются через **/**.\nАдминистраторам разрешается использовать команды: **Адана открой**, **Адана закрой** и **Адана рифмуй**.\nПервые 2 закрывают и открывают доступ к текстовому каналу, а последняя включает ответы от бота.").setThumbnail(client.user.avatarURL());
+    const mainEmbed = embed(int).setAuthor("Вот мои команды!").setText("Они все используются через **/**.\nАдминистраторам разрешается использовать команды: **Адана открой**, **Адана закрой** и **Адана рифмуй**.\nПервые 2 включают/отключат ответы бота на канале, а последняя включает ответы от бота.").setThumbnail(client.user.avatarURL());
 
     for (index of [1, 2, 3, 4, 5]) {
       const filtered = client.slashCommands.filter(obj => obj.category === index);
