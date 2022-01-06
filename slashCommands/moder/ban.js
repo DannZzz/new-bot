@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const ms = require("ms");
+const { warns } = require("../../JSON/choices");
 
 module.exports = {
   name: "ban",
@@ -12,21 +13,14 @@ module.exports = {
     .setDescription("Участник сервера!")
     .setRequired(true)
   )
-  .addNumberOption(o => o
+  .addIntegerOption(o => o
     .setName("дни")
     .setDescription("Сообщения в течении определённой времени, которые удалятся!")
   )
   .addStringOption(o => o
     .setName("причина")
     .setDescription("Причина бана!")
-    .addChoice("Неадекватное поведение", "Неадекватное поведение")
-    .addChoice("Оскорбления", "Оскорбления")
-    .addChoice("Пиар", "Пиар")
-    .addChoice("Расизм, религизм", "Расизм, религизм")
-    .addChoice("Спам и флуд", "Спам и флуд")
-    .addChoice("Оффтоп", "Оффтоп")
-    .addChoice("Распрострaнения ссылок", "Распрострaнения ссылок")
-    .addChoice("18+ контент", "18+ контент")  
+    .addChoices(warns)
   ),
   botPermissions: ["BAN_MEMBERS"],
   run: async (client, int, Data) => {
@@ -35,7 +29,7 @@ module.exports = {
       const guild = int.guild;
       const user = int.user;
       const target = int.options.getMember("участник") || int.options.getUser("участник");
-      let days = Math.round(int.options.getNumber("дни"));
+      let days = int.options.getInteger("дни");
       let reason = int.options.getString("причина");
 
       let reasonCheck = true;

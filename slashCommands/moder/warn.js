@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-
+const { warns } = require("../../JSON/choices");
 module.exports = {
   name: "warn",
   category: 1,
@@ -14,14 +14,7 @@ module.exports = {
   .addStringOption(o => o
     .setName('причина')
     .setDescription("Причина предупреждений.")
-    .addChoice("Неадекватное поведение", "Неадекватное поведение")
-    .addChoice("Оскорбления", "Оскорбления")
-    .addChoice("Пиар", "Пиар")
-    .addChoice("Расизм, религизм", "Расизм, религизм")
-    .addChoice("Спам и флуд", "Спам и флуд")
-    .addChoice("Оффтоп", "Оффтоп")
-    .addChoice("Распрострaнения ссылок", "Распрострaнения ссылок")
-    .addChoice("18+ контент", "18+ контент")  
+    .addChoices(warns)
   ),
   run: async (client, int, Data) => {
     const { embed, serverData, F, util, db } = Data;
