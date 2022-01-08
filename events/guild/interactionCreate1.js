@@ -11,6 +11,8 @@ const rewards = require("../../rewards");
 const weapons = require("../../JSON/weapons");
 const heroes = require("../../JSON/heroes");
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const Limit = require("discord.js-rate-limiter");
+const rate = new Limit(1, config.GLOBAL_COOLDOWN)
 
 module.exports = {
   name: "interactionCreate",
@@ -26,16 +28,14 @@ module.exports = {
 
     const cooldowns = client.ops.cooldowns;
     if (commandCheck) {
-      
       if (!checkDisabling(commandCheck.name, interaction.member, interaction.channel, serverData)) return embed(interaction).setError("Эту команду ты сейчас не можешь использовать, она может быть отключена администратором!").send("reply", true);
       if (commandCheck.botPermissions && !interaction.guild.me.permissions.has(commandCheck.botPermissions)) return embed(interaction).setError("У меня недостаточны прав!").send();
 
       if (client.ops.shop.has(interaction.user.id)) return embed(interaction).setError("Подожди пока `магазин` закончится!").send();
       if (client.ops.GLOBAL_MENU_COOLDOWN.has(interaction.user.id)) return embed(interaction).setError("Подожди пока меню закроется!").send();
 
-      if ( client.ops.GLOBAL_COOLDOWN_SET.has(interaction.user.id) ) return;
-      client.ops.GLOBAL_COOLDOWN_SET.add(interaction.user.id);
-      setTimeout(() => client.ops.GLOBAL_COOLDOWN_SET.delete(interaction.user.id), config.GLOBAL_COOLDOWN);
+      const limited = rate.take(interaction.user.id);
+      if (limited) return;
 
       if (commandCheck.dev && !config.DEVELOPER.includes(interaction.user.id)) return embed(interaction).setError("Эта команда недоступна для тебя!").send();
 
