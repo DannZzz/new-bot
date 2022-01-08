@@ -11,8 +11,8 @@ const rewards = require("../../rewards");
 const weapons = require("../../JSON/weapons");
 const heroes = require("../../JSON/heroes");
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-const Limit = require("discord.js-rate-limiter");
-const rate = new Limit(1, config.GLOBAL_COOLDOWN)
+const { RateLimiter } = require("discord.js-rate-limiter");
+const rate = new RateLimiter(1, config.GLOBAL_COOLDOWN)
 
 module.exports = {
   name: "interactionCreate",
