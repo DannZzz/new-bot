@@ -26,7 +26,7 @@ module.exports = {
     if (msg.author.bot || msg.channel.type !== "GUILD_TEXT") return;
 
     const splited = msg.content.toLowerCase().trim().split(/ +/g);
-    console.log(splited)
+
     const checkingName = msg.content.toLowerCase().trim().split(/ +/g);
     const filtered = checkingName.filter(message => adananames.includes(message));
     if (filtered && filtered.length > 0 && !magicStart.includes(msg.content.toLowerCase()) && open !== splited[1] && close !== splited[1]) {
@@ -91,6 +91,7 @@ module.exports = {
 
     const DATA = {
       Discord,
+      db,
       getMember: (msg, obj = {
         member: "",
         guild: ""

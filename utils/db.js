@@ -1,11 +1,13 @@
 const profile = require("./database/modelData/profile");
 const server = require("./database/modelData/server");
 const game = require("./database/modelData/game");
+const bot = require("./database/modelData/bot");
 
 const models = {
   profile,
   server,
   game,
+  bot
 }
 
 const methods = {

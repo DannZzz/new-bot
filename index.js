@@ -2,7 +2,7 @@ const Client = require("./utils/Client");
 const config = require("./config");
 const fs = require("fs");
 const util = require("dann-util");
-
+const db = require("./utils/db");
 require("./utils/database/connect")();
 
 const client = new Client({allowedMentions: { parse: [] }, intents: ["GUILD_MEMBERS", "GUILDS", "GUILD_MESSAGES"], token: process.env.TOKEN || config.TOKEN});
@@ -51,27 +51,21 @@ setInterval(async () => {
   // if there's a date in localstorage and it's equal to the above:
   // inferring a day has yet to pass since both dates are equal.
 
-  // let botTime = await botData.findOne({name: "main"})
-  // if (!botTime) {
-  //   let dat = await botData.create({
-  //     timeToNull: date
-  //   })
-  //   dat.save()
-  // }
-  // botTime = await botData.findOne({name: "main"})
-  // if ( botTime.timeToNull == date ) return false;
-  // if ( timeTwo !== "00" ) return false;
+  const botTime = await db.findOrCreate("bot", "main");
+  if ( botTime.time == date ) return false;
+  if ( timeTwo !== "00" ) return false;
 
   // this portion of logic occurs when a day has passed
-  // await botData.updateMany({}, {$set: {timeToNull: date}})
+  await db.models.bot.updateMany({}, {$set: {time: date}})
   return true;
 }
 
 
 // some function which should run once a day
 async function runOncePerDay(){
-  const asd = await hasOneDayPassed()
+  const asd = await hasOneDayPassed();
   if( !asd ) return;
+  await db.models.server.updateMany({}, {$set: {allTemporaryMutes: []}});
   // your code below
 }
 runOncePerDay()
