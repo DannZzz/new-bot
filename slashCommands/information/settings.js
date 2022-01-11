@@ -30,6 +30,13 @@ module.exports = {
     };
 
 
+    const temporaryMutes = (serverData.temporaryRolesForMute || []).map(obj => {
+      const role = guild.roles.cache.get(obj.id);
+      if (role) {
+        return `${role} — \`${util.formatNumber(obj.uses)}\``
+      }
+    })
+
     const moderrole = (serverData.moderrole || []).filter(roleId => guild.roles.cache.get(roleId));
     const banAllowedRoles = (serverData.banAllowedRoles || []).filter(roleId => guild.roles.cache.get(roleId));
     const kickAllowedRoles = (serverData.kickAllowedRoles || []).filter(roleId => guild.roles.cache.get(roleId));
@@ -42,11 +49,13 @@ module.exports = {
 
     const mainEmbed = embed(int)
     .setAuthor("⚙ Настройки сервера")
+    .addField("Премиум:", serverData.premium && serverData.premium > new Date() ? `До ${Discord.Formatters.time(F.timestamp(0, serverData.premium.getTime()))}` : "Нет")
     .addField("Отключённые каналы от ответов:", mapped.length > 0 ? mapped.join(", ") : "Не найдены")
     .addField("Роли модераторов:", moderrole.length > 0 ? moderrole.map(roleId => guild.roles.cache.get(roleId)).join(", ") : "Нет назначенных ролей" )
     .addField("Роли банеров:", banAllowedRoles.length > 0 ? banAllowedRoles.map(roleId => guild.roles.cache.get(roleId)).join(", ") : "Нет назначенных ролей" )
     .addField("Роли кикеров:", kickAllowedRoles.length > 0 ? kickAllowedRoles.map(roleId => guild.roles.cache.get(roleId)).join(", ") : "Нет назначенных ролей" )
     .addField("Глобально отключённые команды:", disabled.length > 0 ? disabled.join(", ") : `Не найдены`)
+    .addField("Роль | количество мьютов в день", temporaryMutes.length > 0 ? temporaryMutes.join("\n") : "Роли не назначены")
     .setFooter("/хелп <команда> — для информации")
     .send();
   }
