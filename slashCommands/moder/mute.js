@@ -37,7 +37,7 @@ module.exports = {
   botPermissions: ["MODERATE_MEMBERS"],
   run: async (client, int, Data) => {
     //return console.log(int.member.permissions);
-      const { embed, config, emoji, db, F, util, Discord } = Data;
+      const { embed, config, emoji, db, F, util, Discord, serverData: server } = Data;
       const guild = int.guild;
       const user = int.user;
       const target = int.options.getMember("участник");
@@ -48,8 +48,6 @@ module.exports = {
         reasonCheck = false;
         reason = "Причина не указана"
       };
-
-      const server = await db.findOrCreate("server", int.guild.id);
 
       let moderrole = false;
 
@@ -66,16 +64,45 @@ module.exports = {
       if (moderrole) {
         if (int.member.roles.cache.hasAny(...moderrole)) hasModerRole = true;
         if (target.roles.cache.hasAny(...moderrole)) isTargetModer = true;
-        console.log(hasModerRole, isTargetModer)
       }
 
-      if (!hasUserPermission && !hasModerRole) return embed(int).setError("У тебя недостаточно прав, и не имеешь роль модератора.").send();
+      let hasSomeMutes = false;
+      let highRolePos = -1;
+      let highRole = false;
+      if (server.temporaryRolesForMute && server.temporaryRolesForMute.length > 0 && (server.premium && server.premium > new Date())) {
+        const roles = server.temporaryRolesForMute.map(obj => obj.id);
+        const validRoles = roles.filter(id => guild.roles.cache.get(id));
+        validRoles.forEach(id => {
+          if (int.member.roles.cache.has(id)) {
+            const role = guild.roles.cache.get(id);
+            if (!highRole || highRolePos < role.position) {
+              highRole = id;
+              highRolePos = role.position
+              hasSomeMutes = true;
+            }
+          }
+        })
+      }
+
+      if (!hasUserPermission && !hasModerRole && !hasSomeMutes) return embed(int).setError("У тебя недостаточно прав, и не имеешь роль модератора.").send();
 
       if (!target) return embed(int).setError("Участник не найден!").send();
       if (target.user.bot) return embed(int).setError("Нельзя замьютить ботов!").send()
       if (target.id === user.id) embed(int).setError("Ляя чел, укажи другого участника!").send();
       if (guild.me.roles.highest.position <= target.roles.highest.position) return embed(int).setError("Я не могу замьютить этого участника!").send();
+      const mutes = server.allTemporaryMutes || [];
+
+      const onlyMutes = !hasUserPermission && !hasModerRole && hasSomeMutes;
+      let validMuteCount;
+      if (onlyMutes) {
+        const maxUses = server.temporaryRolesForMute.find(obj => obj.id === highRole).uses;
+        const filtered = mutes.filter(i => i === user.id);
+        validMuteCount = maxUses - filtered.length;
+        if (filtered.length >= maxUses) return embed(int).setError("У вас не остались мьютов, дождитесь до завтра!").send();
+      }
+
       if (hasTargetPermission || isTargetModer) {
+        if (onlyMutes) return embed(int).setError("Ты не сможешь замьютить модератора!").send()
         if (target.roles.highest.position >= int.member.roles.highest.position && user.id !== guild.ownerId) return embed(int).setError("Ты не можешь замьютить участника с этой ролью!").send();
         if (target.id === guild.ownerId) return embed(int).setError("Это владелец сервера, невозможно замьютить.").send();
       }
@@ -90,6 +117,10 @@ module.exports = {
       if (reasonCheck) {
         emb.addField("Причина:", reason);
       }
-      emb.send();
+      await emb.send();
+      if (onlyMutes) {
+        int.followUp({content: `У тебя остались еще ${validMuteCount-1} мьютов(-а) сегодня.`, ephemeral: true});
+        await db.models.server.updateOne({_id: guild.id}, {$set: {allTemporaryMutes: [...mutes, user.id]}});
+      }
   }
 }
