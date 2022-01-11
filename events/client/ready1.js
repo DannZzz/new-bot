@@ -7,6 +7,6 @@ module.exports = {
   run: async (client) => {
     console.log(`${client.user.tag} is ready!`);
     await db.models.game.updateMany({}, {$set: {main: 0}})
-    client.user.setActivity(config.CLIENT_STATUS || "HELLO", {type: "WATCHING"});
+    client.user.setActivity(`за ${client.guilds.cache.size} серверами`, {type: "WATCHING"});
   }
 }
