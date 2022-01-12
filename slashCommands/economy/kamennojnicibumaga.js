@@ -140,8 +140,8 @@ module.exports = {
 
         const myData = await db.findOrCreate("profile", int.user.id);
         const memberData = await db.findOrCreate("profile", member.id);
-        if ((myData.tokens || 0) < bet) return embed(i).setTitle("Ошибка").setError("Недостаточно средств.").send("followUp", true);
-        if ((memberData.tokens || 0) < bet) return embed(i).setTitle("Ошибка").setError("Недостаточно средств.").send("followUp", true);
+        if ((myData.tokens || 0) + bet < bet) return embed(i).setTitle("Ошибка").setError("Недостаточно средств.").send("followUp", true);
+        if ((memberData.tokens || 0) + bet < bet) return embed(i).setTitle("Ошибка").setError("Недостаточно средств.").send("followUp", true);
 
         maindata[i.user.id].choice = i.customId;
 
