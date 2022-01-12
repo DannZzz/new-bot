@@ -68,7 +68,12 @@ module.exports = {
     const type = obj[dataType];
 
     if (dataType === "мьют-по-количеству") {
-      if (!serverData.premium || serverData.premium < new Date()) return embed(int).setError('Чтобы использовать эту функцию ваш сервер должен быть **Премиум** сервером.').send();
+      if ((!serverData.premium || serverData.premium < new Date()) && serverData.temporaryRolesForMute && serverData.temporaryRolesForMute.length >= 2) {
+        if (serverData?.temporaryRolesForMute?.length > 2) {
+          await db.models.server.updateOne({_id: guild.id}, {$set: {temporaryRolesForMute: [serverData.temporaryRolesForMute[0], serverData.temporaryRolesForMute[1]]}});
+        }
+        return embed(int).setError('Чтобы добавлять больше ролей, ваш сервер должен быть **Премиум** сервером.').send();
+      }
       if (serverData.temporaryRolesForMute && serverData.temporaryRolesForMute.length >= 20) return embed(int).setError("На этом сервере можете добавить максимум 20-и ролей.").send();
 
       if (uses < 0) return embed(int).setError(`Количество доступных мьютов должен быть 1 или больше, либо 0 чтобы убрать.`).send();
