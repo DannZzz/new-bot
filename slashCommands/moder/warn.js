@@ -15,6 +15,10 @@ module.exports = {
     .setName('причина')
     .setDescription("Причина предупреждений.")
     .addChoices(warns)
+  )
+  .addStringOption(o => o
+    .setName("своя-причина")
+    .setDescription("Своя причина.")
   ),
   run: async (client, int, Data) => {
     const { embed, serverData, F, util, db } = Data;
@@ -22,7 +26,7 @@ module.exports = {
     const guild = int.guild;
     const user = int.user;
     const target = int.options.getMember("участник");
-    let reason = int.options.getString("причина");
+    let reason = int.options.getString("своя-причина") || int.options.getString("причина");
     let reasonCheck = true;
     if (!reason) {
       reasonCheck = false;

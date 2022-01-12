@@ -16,7 +16,11 @@ module.exports = {
   .addStringOption(o => o
     .setName("причина")
     .setDescription("Причина кика.")
-    .addChoices(warns) 
+    .addChoices(warns)
+  )
+  .addStringOption(o => o
+    .setName("своя-причина")
+    .setDescription("Своя причина.")
   ),
   botPermissions: ["KICK_MEMBERS"],
   run: async (client, int, Data) => {
@@ -26,7 +30,7 @@ module.exports = {
       const user = int.user;
       const target = int.options.getMember("участник");
       let days = Math.round(int.options.getNumber("дни"));
-      let reason = int.options.getString("причина");
+      let reason = int.options.getString("своя-причина") || int.options.getString("причина");
 
       let reasonCheck = true;
       if (!reason) {

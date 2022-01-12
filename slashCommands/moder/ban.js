@@ -7,20 +7,24 @@ module.exports = {
   category: 1,
   data: new SlashCommandBuilder()
   .setName("бан")
-  .setDescription("Забанить участника из сервера!")
+  .setDescription("Забанить участника из сервера.")
   .addUserOption(o => o
     .setName("участник")
-    .setDescription("Участник сервера!")
+    .setDescription("Участник сервера.")
     .setRequired(true)
   )
   .addIntegerOption(o => o
     .setName("дни")
-    .setDescription("Сообщения в течении определённой времени, которые удалятся!")
+    .setDescription("Сообщения в течении определённой времени, которые удалятся.")
   )
   .addStringOption(o => o
     .setName("причина")
-    .setDescription("Причина бана!")
+    .setDescription("Причина бана.")
     .addChoices(warns)
+  )
+  .addStringOption(o => o
+    .setName("своя-причина")
+    .setDescription("Своя причина.")
   ),
   botPermissions: ["BAN_MEMBERS"],
   run: async (client, int, Data) => {
@@ -30,7 +34,7 @@ module.exports = {
       const user = int.user;
       const target = int.options.getMember("участник") || int.options.getUser("участник");
       let days = int.options.getInteger("дни");
-      let reason = int.options.getString("причина");
+      let reason = int.options.getString("своя-причина") || int.options.getString("причина");
 
       let reasonCheck = true;
       if (!reason) {

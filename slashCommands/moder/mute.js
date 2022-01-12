@@ -33,6 +33,10 @@ module.exports = {
     .setName("причина")
     .setDescription("Причина мьюта.")
     .addChoices(warns)
+  )
+  .addStringOption(o => o
+    .setName("своя-причина")
+    .setDescription("Своя причина.")
   ),
   botPermissions: ["MODERATE_MEMBERS"],
   run: async (client, int, Data) => {
@@ -42,7 +46,7 @@ module.exports = {
       const user = int.user;
       const target = int.options.getMember("участник");
       const time = int.options.getString("время");
-      let reason = int.options.getString("причина");
+      let reason = int.options.getString("своя-причина") || int.options.getString("причина");
       let reasonCheck = true;
       if (!reason) {
         reasonCheck = false;
