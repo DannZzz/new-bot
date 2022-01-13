@@ -1,5 +1,20 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
+const msToString = {
+  "5m": "5 минут",
+  "10m": "10 минут",
+  "30m": "30 минут",
+  "1h": "1 час",
+  "2h": "2 часа",
+  "3h": "3 часа",
+  "6h": "6 часов",
+  "12h": "12 часов",
+  "1d": "1 день",
+  "2d": "2 дня",
+  "5d": "5 дней",
+  "1w": "1 неделя"
+}
+
 module.exports = {
   name: "settings",
   category: 3,
@@ -33,7 +48,7 @@ module.exports = {
     const temporaryMutes = (serverData.temporaryRolesForMute || []).map(obj => {
       const role = guild.roles.cache.get(obj.id);
       if (role) {
-        return `${role} — \`${util.formatNumber(obj.uses)}\``
+        return `${role} — \`${util.formatNumber(obj.uses)}\` — \`${obj.limit ? msToString[obj.limit] : msToString["1w"]}\``
       }
     })
 
@@ -55,7 +70,7 @@ module.exports = {
     .addField("Роли банеров:", banAllowedRoles.length > 0 ? banAllowedRoles.map(roleId => guild.roles.cache.get(roleId)).join(", ") : "Нет назначенных ролей" )
     .addField("Роли кикеров:", kickAllowedRoles.length > 0 ? kickAllowedRoles.map(roleId => guild.roles.cache.get(roleId)).join(", ") : "Нет назначенных ролей" )
     .addField("Глобально отключённые команды:", disabled.length > 0 ? disabled.join(", ") : `Не найдены`)
-    .addField("Роль | количество мьютов в день", temporaryMutes.length > 0 ? temporaryMutes.join("\n") : "Роли не назначены")
+    .addField("Роль | количество мьютов в день | макс. срок", temporaryMutes.length > 0 ? temporaryMutes.join("\n") : "Роли не назначены")
     .setFooter("/хелп <команда> — для информации")
     .send();
   }
