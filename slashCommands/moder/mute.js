@@ -2,6 +2,21 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const ms = require("ms");
 const { warns } = require("../../JSON/choices");
 
+const msToString = {
+  "5m": "5 минут",
+  "10m": "10 минут",
+  "30m": "30 минут",
+  "1h": "1 час",
+  "2h": "2 часа",
+  "3h": "3 часа",
+  "6h": "6 часов",
+  "12h": "12 часов",
+  "1d": "1 день",
+  "2d": "2 дня",
+  "5d": "5 дней",
+  "1w": "1 неделя"
+}
+
 module.exports = {
   name: "mute",
   category: 1,
@@ -73,6 +88,7 @@ module.exports = {
       let hasSomeMutes = false;
       let highRolePos = -1;
       let highRole = false;
+      let limit = undefined;
       if (server.temporaryRolesForMute && server.temporaryRolesForMute.length > 0 && (server.premium && server.premium > new Date())) {
         const roles = server.temporaryRolesForMute.map(obj => obj.id);
         const validRoles = roles.filter(id => guild.roles.cache.get(id));
@@ -99,10 +115,15 @@ module.exports = {
       const onlyMutes = !hasUserPermission && !hasModerRole && hasSomeMutes;
       let validMuteCount;
       if (onlyMutes) {
-        const maxUses = server.temporaryRolesForMute.find(obj => obj.id === highRole).uses;
+        const maxUses = server.temporaryRolesForMute.find(obj => obj.id === highRole)
         const filtered = mutes.filter(i => i === user.id);
-        validMuteCount = maxUses - filtered.length;
-        if (filtered.length >= maxUses) return embed(int).setError("У вас не остались мьютов, дождитесь до завтра!").send();
+        validMuteCount = maxUses.uses - filtered.length;
+        if (filtered.length >= maxUses.uses) return embed(int).setError("У вас не остались мьютов, дождитесь до завтра!").send();
+        if (maxUses.limit) {
+          const thisTime = ms(time);
+          const thisRoleLimit = ms(maxUses.limit);
+          if (thisTime > thisRoleLimit) return embed(int).setError(`Твой максимальный срок для выдачи мьюта: \`${msToString[maxUses.limit]}\``).send();
+        }
       }
 
       if (hasTargetPermission || isTargetModer) {
