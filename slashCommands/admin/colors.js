@@ -100,7 +100,7 @@ module.exports = {
       async interfaceAll () {
         const colors = await this.validColors()
         let h = 80;
-        const canvas = createCanvas(2000, (colors.length || 1) * 80)
+        const canvas = createCanvas(2000, ((Math.ceil(colors.length / 2)) || 1) * 100)
         var ctx = canvas.getContext('2d')
 
         if ((!sd.premium || sd.premium < new Date()) && colors.length > 10) {
@@ -123,10 +123,10 @@ module.exports = {
 
           ctx.fillStyle = obj.color;
 
-          ctx.font = "100px Calibri";
+          ctx.font = "bold 100px Calibri";
           ctx.fillText(util.shorten(`${i+1}. ${name}`, 17), (i + 1) % 2 === 0 ? 1000 : 1, h)
 
-          if ((i + 1) % 2 === 0) h += 150;
+          if ((i + 1) % 2 === 0) h += 100;
 
 
         })
