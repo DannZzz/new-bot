@@ -100,7 +100,7 @@ module.exports = {
       async interfaceAll () {
         const colors = await this.validColors()
         let h = 80;
-        const canvas = createCanvas(2000, (colors.length || 1) * 100)
+        const canvas = createCanvas(2000, (colors.length || 1) * 80)
         var ctx = canvas.getContext('2d')
 
         if ((!sd.premium || sd.premium < new Date()) && colors.length > 10) {
@@ -150,7 +150,7 @@ module.exports = {
             id: role.id
           }] }})
 
-          embed(int).setText(`Успешно добавлен цветная-роль: ${role}`).setColor(colorHex.toUpperCase()).send("followUp");
+          embed(int).setText(`Успешно добавлена цветная-роль: ${role}`).setColor(colorHex.toUpperCase()).send("followUp");
       }
 
       async deleteColor(index) {
@@ -178,7 +178,7 @@ module.exports = {
           id: role.id
         }] }});
 
-        embed(int).setText(`Успешно добавлен цветная-роль: ${role}`).setColor(role.hexColor).send("followUp");
+        embed(int).setText(`Успешно добавлена цветная-роль: ${role}`).setColor(role.hexColor).send("followUp");
       }
 
       async deleteColors() {
@@ -206,7 +206,7 @@ module.exports = {
           id: role.id
         }] }})
 
-        embed(int).setText(`Успешно добавлен цветная-роль: ${role}`).setColor(role.hexColor).send("followUp");
+        embed(int).setText(`Успешно добавлена цветная-роль: ${role}`).setColor(role.hexColor).send("followUp");
       }
 
       async createReaction() {
