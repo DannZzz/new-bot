@@ -12,7 +12,8 @@ const newSchema = new Schema({
   punishmentsCount: { type: Number, default: 1 },
   disabledCommands: { type: Object, default: {} },
   allTemporaryMutes: { type: Array, default: [] },
-  temporaryRolesForMute: { type: Array, default: [] }
+  temporaryRolesForMute: { type: Array, default: [] },
+  colors: { type: Array, default: [] }
 });
 
 module.exports = model("server", newSchema);
