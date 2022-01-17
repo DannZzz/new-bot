@@ -38,7 +38,7 @@ module.exports = {
         let options;
         if (data.options && data.options.length > 0) {
           options = data.options.map((obj, index) => {
-            return `${index+1}. **${obj.name}** - ${optionTypes[obj.type + ""]}\n${obj.required ? emoji.check : emoji.cross}└ ${obj.description}`;
+            return `${index+1}. **${obj.name}** - ${optionTypes[obj.type + ""] || "Подкоманда"}\n${obj.required ? emoji.check : emoji.cross}└ ${obj.description}`;
           })
         }
         var commandInGuild = false;
