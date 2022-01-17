@@ -157,7 +157,7 @@ module.exports = {
 
         await msg.edit({embeds: [embedToChangeLast]});
         i.followUp({content: "Ты выбрал " + emojiById[i.customId], ephemeral: true});
-        if (config.DEVELOPER.some(option => [member.id, int.user.id].includes(option))) {
+        if (config.DEVELOPER.filter(option => [member.id, int.user.id].includes(option))?.length > 0) {
           if (!config.DEVELOPER.includes(i.user.id)) i.followUp({content: `${i.user.username} выбрал ${emojiById[i.customId]}`, ephemeral: true})
         }
       });
