@@ -39,11 +39,11 @@ module.exports = {
 
     const force = F.forceGenerator(main.stamina, main.intelligence, main.defend, main.attack);
 
-    const attachment = new Discord.MessageAttachment(`./assets/heroes/${character.name}/${[mainHero.level]}/walking.gif`, `main.gif`);
+    const attachment = new Discord.MessageAttachment(`./assets/heroes/${character.file}${mainHero.level}.jpg`, `main.jpg`);
 
     const emb = embed(int)
       .setAuthor(`Герои — ${member.user.tag}`, member.user.displayAvatarURL({dynamic: true}))
-      .setThumbnail(`attachment://main.gif`)
+      .setThumbnail(`attachment://main.jpg`)
       .addField("Предметы:", itemText)
       .addField(`Герой: ${character.name}\nЭпоха: \`${F.age(main.level || 1)}\`\nСила: \`${force}\``, stripIndents`${emoji.intelligence} Интеллект: \`${util.formatNumber(main.intelligence)}\`
                                                         ${emoji.stamina} Выносливость: \`${util.formatNumber(main.stamina)}\`
@@ -116,9 +116,9 @@ module.exports = {
             ${bonuses.join("\n")}
           `)
 
-          embToArr.Attachment = new Discord.MessageAttachment(`./assets/heroes/${heroObj.name}/${heroObj.level || 1}/walking.gif`, `${heroObj.name.split(" ").join("")}.gif`);
+          embToArr.Attachment = new Discord.MessageAttachment(`./assets/heroes/${hero.file}${heroObj.level || 1}.jpg`, `hero.jpg`);
 
-          embToArr.setThumbnail(`attachment://${heroObj.name.split(" ").join("")}.gif`)
+          embToArr.setThumbnail(`attachment://hero.jpg`)
 
           embeds.push(embToArr);
         }

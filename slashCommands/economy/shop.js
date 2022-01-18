@@ -49,9 +49,9 @@ module.exports = {
 						toAdd.addField("Цена:", `${emoji[heroObj.costType.slice(0, heroObj.costType.length-1)]}\`${util.formatNumber(heroObj.cost)}\``)
 					}
 
-					toAdd.Attachment = new Discord.MessageAttachment(`./assets/heroes/${heroObj.name}/1/walking.gif`, `${heroObj.name.split(" ").join("")}.gif`);
+					toAdd.Attachment = new Discord.MessageAttachment(`./assets/heroes/${heroObj.file}1.jpg`, `hero.jpg`);
 
-					toAdd.setThumbnail(`attachment://${heroObj.name.split(" ").join("")}.gif`)
+					toAdd.setThumbnail(`attachment://hero.jpg`)
 
 					arr.push(
 						toAdd

@@ -26,7 +26,7 @@ module.exports = {
 
       hero = F.randomHero();
 
-      fighting = new Discord.MessageAttachment(`./assets/heroes/${hero.name}/${hero.level}/fighting.gif`, `hero${i}.gif`);
+      fighting = new Discord.MessageAttachment(`./assets/heroes/${hero.file}${hero.level}.jpg`, `hero${i}.jpg`);
 
       const embedMain = embed(int)
         .setTitle(`Выбирай противника!`)
@@ -43,7 +43,7 @@ module.exports = {
           ${emoji.defend} Защита: \`${hero.defend}\`
           ${emoji.attack} Атака: \`${hero.attack}\`
           `)
-        .setThumbnail(`attachment://hero${i}.gif`);
+        .setThumbnail(`attachment://hero${i}.jpg`);
 
       i++;
       return {embeds: [embedMain], files: [fighting], fetchReply: true };
