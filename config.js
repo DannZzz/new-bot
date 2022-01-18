@@ -8,7 +8,7 @@ const obj = {
   DEVELOPER,
   ADMIN,
   GLOBAL_COOLDOWN: 1500,
-  MAIN_COLOR: "#E1D7CF",
+  MAIN_COLOR: "#9B7D73",
   CLIENT_STATUS: "/хелп | Dann#1000",
   SLASH_GUILD: false, // or array of guild ids
   DEFAULT_ITEM_COUNT: 3,
