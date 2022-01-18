@@ -21,7 +21,7 @@ const obj = {
   },
   CREDITS: {
     basic: {
-      money: 100,
+      money: 500,
       rub: 50
     }
   },
