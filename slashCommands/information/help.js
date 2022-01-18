@@ -20,7 +20,7 @@ module.exports = {
       if (cmdName) {
         cmdName = cmdName.toLowerCase();
         const cmd = client.slashCommands.find(c => c.data.name === cmdName);
-        if (!cmd) return embed(int).setError(`Команда **${cmdName}** не найдена.`).send();
+        if (!cmd || cmd.dev) return embed(int).setError(`Команда **${cmdName}** не найдена.`).send();
 
         const optionTypes = {
           "1": "Подкоманда",
@@ -112,7 +112,7 @@ module.exports = {
     const mainEmbed = embed(int).setAuthor("Вот мои команды!").setText("Они все используются через **/**.\nАдминистраторам разрешается использовать команды: **Адана открой**, **Адана закрой** и **Адана рифмуй**.\nПервые 2 включают/отключат ответы бота на канале, а последняя включает ответы от бота.").setThumbnail(client.user.avatarURL());
 
     for (index of [1, 2, 3, 4, 5]) {
-      const filtered = client.slashCommands.filter(obj => obj.category === index);
+      const filtered = client.slashCommands.filter(obj => obj.category === index && !obj.dev);
       const textedCommands = filtered.map(obj => `\`${obj.data.name}\` - ${obj.data.description}`);
       const textNames = filtered.map(obj => `\`${obj.data.name}\``);
       options.push({
