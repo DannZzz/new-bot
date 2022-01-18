@@ -70,8 +70,13 @@ module.exports = {
 
 				const b3 = new Discord.MessageButton()
 				.setCustomId("heroesbuy")
-				.setLabel("Купить этого герой")
+				.setLabel("Купить этого героя")
 				.setStyle("PRIMARY")
+
+        const b4 = new Discord.MessageButton()
+        .setEmoji(emoji.cancel)
+        .setCustomId("arrowPageClose")
+        .setStyle("DANGER")
 
 				let page = 0;
 
@@ -80,7 +85,7 @@ module.exports = {
 			    const ids = [int.user.id];
 			    const pages = arr;
 			    const timeout = 30000;
-			    const buttonList = [b1, b2, b3];
+			    const buttonList = [b1, b2, b3, b4];
 
 			    const row = new Discord.MessageActionRow().addComponents(buttonList);
 
@@ -146,6 +151,10 @@ module.exports = {
 				        	embed(int).setSuccess(`Ты купил — **${hero.name}**!`).send("followUp")
 				        	break;
 				        }
+                case buttonList[3].customId:
+                  tryMe = true;
+                  collector.stop();
+                  break;
 				        default:
 				          break;
 			      	}
