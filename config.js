@@ -13,8 +13,8 @@ const obj = {
   SLASH_GUILD: false, // or array of guild ids
   DEFAULT_ITEM_COUNT: 3,
   MAX_BAG_COUNT: 30,
-  FIGHT_APPLE_WIN: [10, 30],
-  FIGHT_COOLDOWN: 15 * 60 * 1000,
+  FIGHT_APPLE_WIN: [30, 150],
+  FIGHT_COOLDOWN: 10 * 60 * 1000,
   CHANGE: {
     toMoney: 100,
     toApple: 25
