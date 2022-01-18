@@ -7,7 +7,8 @@ const types = {
 
 module.exports = [
   {
-    name: "Fallen Angels",
+    name: "Рыцарь",
+    file: "рыцарь",
     forBuy: false,
     intelligence: 21,
     defend: 9,
@@ -16,7 +17,8 @@ module.exports = [
     type: "warrior"
   },
   {
-    name: "Golem",
+    name: "Кавалер",
+    file: "кавалер",
     forBuy: true,
     intelligence: 16,
     defend: 20,
@@ -27,7 +29,8 @@ module.exports = [
     type: "tank"
   },
   {
-    name: "King Golem",
+    name: "Голем",
+    file: "голем",
     forBuy: true,
     intelligence: 18,
     defend: 35,
