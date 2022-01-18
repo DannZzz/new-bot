@@ -103,18 +103,20 @@ const obj = {
           const winner = endedObjects[0];
           if (winner.user) {
 
-            const winnerAttachment = new Data.Discord.MessageAttachment(`./assets/heroes/${f.heroObj.name}/${f.heroObj.level}/walking.gif`, "walking.gif");
-            const loserAttachment = new Data.Discord.MessageAttachment(`./assets/heroes/${s.heroObj.name}/${s.heroObj.level}/dying.gif`, "dying.gif");
+            const fromHeroes1 = heroes.find(obj => obj.name === f.heroObj.name);
+            const fromHeroes2 = heroes.find(obj => obj.name === s.heroObj.name);
+
+            const winnerAttachment = new Data.Discord.MessageAttachment(`./assets/heroes/${fromHeroes1.file}${f.heroObj.level}.jpg`, "walking.jpg");
+            const loserAttachment = new Data.Discord.MessageAttachment(`./assets/heroes/${fromHeroes2.file}${s.heroObj.level}.jpg`, "dying.jpg");
 
             const reward = Data.util.random(Math.min(...Data.config.FIGHT_APPLE_WIN), Math.max(...Data.config.FIGHT_APPLE_WIN))
 
-            const emb = Data.embed(int).setTitle("Новый победитель!").setText(stripIndents`
+            const emb = Data.embed(int).setSuccess("asd").setTitle("Новый победитель!").setText(stripIndents`
               Ты выиграл!
               И получил ${Data.emoji.apple}\`${reward}\`
             `)
-            .setThumbnail(`attachment://dying.gif`)
+            .setThumbnail(`attachment://walking.jpg`)
             .setAuthor(int.user.username, int.user.displayAvatarURL({dynamic: true}))
-            .setColor("#00ff00");
 
             const myData = await Data.db.findOrCreate("game", int.user.id);
 
@@ -129,16 +131,19 @@ const obj = {
             msg.channel.send({embeds: [emb], files: [loserAttachment]});
           } else {
 
-            const winnerAttachment = new Data.Discord.MessageAttachment(`./assets/heroes/${s.heroObj.name}/${s.heroObj.level}/walking.gif`, "walking.gif");
-            const loserAttachment = new Data.Discord.MessageAttachment(`./assets/heroes/${f.heroObj.name}/${f.heroObj.level}/dying.gif`, "dying.gif");
+            const fromHeroes1 = heroes.find(obj => obj.name === f.heroObj.name);
+            const fromHeroes2 = heroes.find(obj => obj.name === s.heroObj.name);
 
-            const emb = Data.embed(int).setTitle("Новый победитель!").setText(stripIndents`
+            const winnerAttachment = new Data.Discord.MessageAttachment(`./assets/heroes/${fromHeroes2.file}${s.heroObj.level}.jpg`, "walking.jpg");
+            const loserAttachment = new Data.Discord.MessageAttachment(`./assets/heroes/${fromHeroes1.file}${f.heroObj.level}.jpg`, "dying.jpg");
+
+            const emb = Data.embed(int).setError("asd").setTitle("Новый победитель!").setText(stripIndents`
               Но это не ты..
               Попробуй снова позже!
             `)
-            .setThumbnail(`attachment://dying.gif`)
+            .setThumbnail(`attachment://walking.jpg`)
             .setAuthor(int.user.username, int.user.displayAvatarURL({dynamic: true}))
-            .setColor("#ff0000");
+
             msg.delete();
 
             await Data.util.delay(2500);
@@ -195,11 +200,10 @@ const obj = {
 
           } else {
             collector.stop();
-            const emb = Data.embed(int).setTitle("Ляяя тебе выпала бомба!").setText(stripIndents`
+            const emb = Data.embed(int).setTitle("Ляяя тебе выпала бомба!").setError(stripIndents`
                 Попробуй снова позже!
               `)
-              .setAuthor(int.user.username, int.user.displayAvatarURL({dynamic: true}))
-              .setColor("#ff0000");
+              .setAuthor(int.user.username, int.user.displayAvatarURL({dynamic: true}));
 
             return msg.channel.send({embeds: [emb]});
           }
@@ -282,7 +286,7 @@ const obj = {
     }
     return heroType;
   },
-  randomHero: function () {
+  randomHero: function () {//
     const index = Math.floor(Math.random() * heroes.length)
     let hero = heroes[index];
     hero.level = util.random(1, 3);
@@ -339,7 +343,7 @@ const obj = {
   if (isNaN(perc)) throw new Error('Perc value is not an integer');
   if (isNaN(ofMaxValue)) throw new Error('ofMaxValue value is not an integer');
   if (isNaN(size)) throw new Error('Size is not an integer');
-  const percentage = perc / ofMaxValue; // Calculate the percentage of the bar
+  const percentage = perc / ofMaxValue; // Calculate the percentage �f the bar
   const progress = Math.round((size * percentage)); // Calculate the number of square caracters to fill the progress side.
   const emptyProgress = size - progress; // Calculate the number of dash caracters to fill the empty progress side.
 
