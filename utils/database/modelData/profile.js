@@ -7,7 +7,8 @@ const newSchema = new Schema({
   apples: { type: Number, default: 0 },
   tokens: { type: Number, default: 0 },
   tokensAll: { type: Number, default: 0 },
-  cooldowns: { type: Object, default: {} }
+  cooldowns: { type: Object, default: {} },
+  topgglast: { type: Date, default: new Date() },
 });
 
 const newModel = model("profile", newSchema);
