@@ -81,7 +81,16 @@ module.exports = {
         serverData,
         F,
       }
-      commandCheck.run(client, interaction, DATA);
+
+      commandCheck.run(client, interaction, DATA).then(async () => {
+        const random = util.random(1, 100)
+        if (interaction.replied || interaction.deferred ) {
+          const thisUser = await db.findOrCreate("profile", interaction.user.id);
+          if (thisUser.topgglast && thisUser.topgglast <= new Date()) {
+            if (random > 50) embed(interaction).setText(`Дай свой голос мне, и я дам тебе ${emoji.token}\`${util.formatNumber(rewards.voteReward)}\`\n[Ссылка на голосование!](https://top.gg/bot/726784476377514045/vote)`).send("followUp", true);
+          }
+        }
+      })
     }
 
 
