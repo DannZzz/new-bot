@@ -1,11 +1,11 @@
-const Client = require("./utils/Client");
+const {Client} = require("client-discord")// require("./utils/Client");
 const config = require("./config");
 const fs = require("fs");
 const util = require("dann-util");
 const db = require("./utils/db");
 require("./utils/database/connect")();
 
-const client = new Client({allowedMentions: { parse: [] }, intents: ["GUILD_MEMBERS", "GUILDS", "GUILD_MESSAGES"], token: process.env.TOKEN || config.TOKEN});
+const client = new Client({allowedMentions: { parse: [] }, colors: {main: "#ff00ff"}, token: process.env.TOKEN || config.TOKEN});
 const { Collection } = client.discord;
 client.commands = new Collection();
 client.aliases = new Collection();
@@ -71,4 +71,4 @@ async function runOncePerDay(){
 runOncePerDay()
 }, 1000 * 60 * 5)
 
-client.start();
+client.login();
