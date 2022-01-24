@@ -3,7 +3,7 @@
 var blockedForBuy = [];
 
 var method = {
-  findWeapon: function (id) {
+  findWeapon: function (id = 0) {
     const result = weaponArray.find(weaponObj => weaponObj.id == id);
     return result;
   },
@@ -20,7 +20,7 @@ var method = {
 var weaponArray = [
   {
     id: 1,
-    name: "Bow",
+    name: "Лук",
     emoji: "<:bow:920988161855852605>",
     bonus: {
       attack: 2
@@ -29,7 +29,7 @@ var weaponArray = [
   },
   {
     id: 2,
-    name: "Lyan",
+    name: "Лян",
     emoji: "<:Lyan:920988162212392991>",
     bonus: {
       attack: 1,
@@ -39,7 +39,7 @@ var weaponArray = [
   },
   {
     id: 3,
-    name: "Soul Killer",
+    name: "Убийца душ",
     emoji: "<:soulkiller:920988163596496917>",
     bonus: {
       attack: 3,
@@ -49,7 +49,7 @@ var weaponArray = [
   },
   {
     id: 4,
-    name: "Nature Hunter",
+    name: "Охотник за природой",
     emoji: "<:naturehunter:920988163596496916>",
     bonus: {
       attack: 8,
@@ -58,7 +58,7 @@ var weaponArray = [
   },
   {
     id: 5,
-    name: "Pirate's Hand",
+    name: "Рука Пирата",
     emoji: "<:pirateshand:922115741057187880>",
     bonus: {
       attack: 2,
@@ -68,7 +68,7 @@ var weaponArray = [
   },
   {
     id: 6,
-    name: "Diasword",
+    name: "Меч-алмаз",
     emoji: "<:diasword:922115741266886676>",
     bonus: {
       attack: 5,
@@ -78,7 +78,7 @@ var weaponArray = [
   },
   {
     id: 7,
-    name: "Clik",
+    name: "Клик",
     emoji: "<:clik:922115740679688233>",
     bonus: {
       attack: 6
@@ -87,7 +87,7 @@ var weaponArray = [
   },
   {
     id: 8,
-    name: "Arabian Dance",
+    name: "Арабский танец",
     emoji: "<:arabiandance:922115741526941716>",
     bonus: {
       attack: 15
@@ -97,7 +97,7 @@ var weaponArray = [
   },
   {
     id: 9,
-    name: "Night Soul",
+    name: "Душ ночи",
     emoji: "<:nightsoul:922115741266886677>",
     bonus: {
       attack: 12,
@@ -107,7 +107,7 @@ var weaponArray = [
   },
   {
     id: 10,
-    name: "Amulet of Sahara",
+    name: "Амулет Сахары",
     emoji: "<:amuletofsahara:922122344946868284>",
     bonus: {
       defend: 5,
@@ -116,7 +116,7 @@ var weaponArray = [
   },
   {
     id: 11,
-    name: "Amulet of Wings",
+    name: "Амулет Крыльи",
     emoji: "<:amuletofwings:922122344892358677>",
     bonus: {
       intelligence: 5,
@@ -125,7 +125,7 @@ var weaponArray = [
   },
   {
     id: 12,
-    name: "Amulet of Attack",
+    name: "Амулет атаки",
     emoji: "<:amuletofattack:922122344489701376>",
     bonus: {
       attack: 5,
@@ -134,7 +134,7 @@ var weaponArray = [
   },
   {
     id: 13,
-    name: "Wooden Shield",
+    name: "Деревянный щит",
     emoji: "<:woodenshiel:922122252370214952>",
     bonus: {
       defend: 2,
@@ -143,7 +143,7 @@ var weaponArray = [
   },
   {
     id: 14,
-    name: "Barbarian Shield",
+    name: "Барбарский щит",
     emoji: "<:barbarianshield:922122344422588447>",
     bonus: {
       defend: 3,
@@ -153,7 +153,7 @@ var weaponArray = [
   },
   {
     id: 15,
-    name: "Viking's Shield",
+    name: "Щит Викинга",
     emoji: "<:vikingsshield:922122344443576340>",
     bonus: {
       defend: 5,
@@ -163,7 +163,7 @@ var weaponArray = [
   },
   {
     id: 16,
-    name: "Rock Shield",
+    name: "Каменный щит",
     emoji: "<:rockshield:922122344510677022>",
     bonus: {
       defend: 7
@@ -172,7 +172,7 @@ var weaponArray = [
   },
   {
     id: 17,
-    name: "Frozen Shield",
+    name: "Морозный щит",
     emoji: "<:frozenshield:922122344586178580>",
     bonus: {
       defend: 3,
@@ -182,7 +182,7 @@ var weaponArray = [
   },
   {
     id: 18,
-    name: "Shield of Cobra",
+    name: "Щит Кобры",
     emoji: "<:shildofcobra:922122344586178583>",
     bonus: {
       defend: 9,

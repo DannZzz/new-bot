@@ -39,5 +39,17 @@ module.exports = [
     costType: "coins",
     cost: 500,
     type: "tank"
+  },
+  {
+    name: "Орк",
+    file: "Орк",
+    forBuy: true,
+    intelligence: 8,
+    defend: 66,
+    attack: 9,
+    stamina: 42,
+    costType: "coins",
+    cost: 1500,
+    type: "tank"
   }
 ];
