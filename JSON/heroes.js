@@ -42,7 +42,7 @@ module.exports = [
   },
   {
     name: "Орк",
-    file: "Орк",
+    file: "орк",
     forBuy: true,
     intelligence: 8,
     defend: 66,
