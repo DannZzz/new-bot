@@ -141,7 +141,7 @@ module.exports = {
             name,
             color: ["BLACK", "000", "000000", "#000", "#000000"].includes(colorHex.toUpperCase()) ? "#010101" : colorHex.toUpperCase(),
             position: guild.me.roles.highest.position,
-            reason: "Цветная роль"
+            reason: "Цветная роль",
           });
 
           await db.models.server.updateOne({_id: guild.id}, {$set: { colors: [...sd.colors, {
@@ -280,7 +280,7 @@ module.exports = {
 
         let count = filtered.length;
 
-        if (count > 10 && (!sd.premium || sd.premium < new Date()) ) {
+        if (count >= 10 && (!sd.premium || sd.premium < new Date()) ) {
           embed(int).setError("Это сервер не премиум, вы можете создавать до 10-и ролей.").send("followUp");
           return false;
         } else if (count >= 20) {
