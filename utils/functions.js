@@ -107,7 +107,6 @@ const obj = {
             const fromHeroes2 = heroes.find(obj => obj.name === s.heroObj.name);
 
             const winnerAttachment = new Data.Discord.MessageAttachment(`./assets/heroes/${fromHeroes1.file}${f.heroObj.level}.jpg`, "walking.jpg");
-            const loserAttachment = new Data.Discord.MessageAttachment(`./assets/heroes/${fromHeroes2.file}${s.heroObj.level}.jpg`, "dying.jpg");
 
             const reward = Data.util.random(Math.min(...Data.config.FIGHT_APPLE_WIN), Math.max(...Data.config.FIGHT_APPLE_WIN))
 
@@ -128,14 +127,13 @@ const obj = {
 
             await Data.util.delay(2500);
 
-            msg.channel.send({embeds: [emb], files: [loserAttachment]});
+            msg.channel.send({embeds: [emb], files: [winnerAttachment]});
           } else {
 
             const fromHeroes1 = heroes.find(obj => obj.name === f.heroObj.name);
             const fromHeroes2 = heroes.find(obj => obj.name === s.heroObj.name);
 
             const winnerAttachment = new Data.Discord.MessageAttachment(`./assets/heroes/${fromHeroes2.file}${s.heroObj.level}.jpg`, "walking.jpg");
-            const loserAttachment = new Data.Discord.MessageAttachment(`./assets/heroes/${fromHeroes1.file}${f.heroObj.level}.jpg`, "dying.jpg");
 
             const emb = Data.embed(int).setError("asd").setTitle("Новый победитель!").setText(stripIndents`
               Но это не ты..
@@ -147,7 +145,7 @@ const obj = {
             msg.delete();
 
             await Data.util.delay(2500);
-            msg.channel.send({embeds: [emb], files: [loserAttachment]});
+            msg.channel.send({embeds: [emb], files: [winnerAttachment]});
             };
         } else {
           const randomForReward = Data.util.random(1, 100);
@@ -162,7 +160,7 @@ const obj = {
 
             embed(int.channel.messages.cache.last())
             .setSuccess(`Вау, ты получил ${Data.emoji[item]}\`${forAdd}\` как бонус!`)
-            .setAuthor(int.user.username, int.user.displayAvatarURL({dynamic: true}))
+            .setAuthor({name: int.user.username, iconURL: int.user.displayAvatarURL({dynamic: true})})
             .send();
 
             const toChange = embed(int.channel.messages.cache.last())
@@ -192,7 +190,7 @@ const obj = {
               ${Data.emoji.attack} Атака: \`${s.heroObj.attack}\`
             `, true)
             .setColor(Data.config.MAIN_COLOR)
-            .setAuthor(int.user.username, int.user.displayAvatarURL({dynamic: true}))
+            .setAuthor({name: int.user.username, iconURL: int.user.displayAvatarURL({dynamic: true})})
 
             const disabled = new Data.Discord.MessageActionRow().addComponents([b1, b2.setDisabled(true)]);
 
@@ -203,7 +201,7 @@ const obj = {
             const emb = Data.embed(int).setTitle("Ляяя тебе выпала бомба!").setError(stripIndents`
                 Попробуй снова позже!
               `)
-              .setAuthor(int.user.username, int.user.displayAvatarURL({dynamic: true}));
+              .setAuthor({name: int.user.username, iconURL: int.user.displayAvatarURL({dynamic: true})});
 
             return msg.channel.send({embeds: [emb]});
           }
@@ -317,12 +315,7 @@ const obj = {
     return heroObj;
   },
   getTime: function (date) {
-    const moreTime = new Date(date - new Date());
-    return {
-      hours: moreTime.getUTCHours(),
-      minutes: moreTime.getMinutes(),
-      seconds: moreTime.getSeconds()
-    }
+    
   },
   forceGenerator: function (...values) {
     const reduced = values.reduce((aggr, number) => aggr + number, 0);
