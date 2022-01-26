@@ -13,7 +13,8 @@ const newSchema = new Schema({
   disabledCommands: { type: Object, default: {} },
   allTemporaryMutes: { type: Array, default: [] },
   temporaryRolesForMute: { type: Array, default: [] },
-  colors: { type: Array, default: [] }
+  colors: { type: Array, default: [] },
+  buttonRoles: { type: Array, default: [] }
 });
 
 module.exports = model("server", newSchema);
