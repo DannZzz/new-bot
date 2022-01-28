@@ -29,7 +29,7 @@ module.exports = {
     )
     ,
   run: async (client, int, Data) => {
-    const { errEmb, embed, config, emoji, db } = Data;
+    const { errEmb, embed, config, emoji, db, rewards } = Data;
 
     const type = int.options.getString("фильтр");
     const lang = int.options.getString("язык");
@@ -50,7 +50,7 @@ module.exports = {
     } }})
    
 
-    embed(int).setSuccess("Идея будет рассмотрена нашей администрацией.").send();
+    embed(int).setSuccess(`Идея будет рассмотрена нашей администрацией.\n\nЕсли идея будет одобрена вы получите ${emoji.token}\`${client.util.formatNumber(rewards.suggestEntered)}\`.`).send();
     
   }
 }
