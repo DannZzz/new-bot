@@ -26,8 +26,13 @@ module.exports = {
 
     const serverData = await db.findOrCreate("server", interaction.guildId);
 
+    const isBanned = await db.findOrCreate("ban", interaction.user.id);
+    
     const cooldowns = client.ops.cooldowns;
     if (commandCheck) {
+      if (isBanned.time > new Date()) {
+        return embed(interaction).setError(`Твой аккаунт заблокирован до ${client.timestamp(isBanned.time.getTime(), "F")}\nПричина: \`${isBanned.reason || "Не указано"}\``).setAuthor({name: "Ошибка"}).send()
+      }
       if (!checkDisabling(commandCheck.name, interaction.member, interaction.channel, serverData)) return embed(interaction).setError("Эту команду ты сейчас не можешь использовать, она может быть отключена администратором!").send("reply", true);
       if (commandCheck.botPermissions && !interaction.guild.me.permissions.has(commandCheck.botPermissions)) return embed(interaction).setError("У меня недостаточны прав!").send();
 

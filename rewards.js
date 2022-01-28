@@ -1,4 +1,5 @@
 module.exports = {
+  suggestEntered: 500,
   claim: 20,
   claimApple: 100,
   voteReward: 250,

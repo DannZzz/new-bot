@@ -1,4 +1,5 @@
 const config = require("../../config");
+const rewards = require("../../rewards");
 const translateAPI = require("@iamtraction/google-translate");
 const embed = require("dann-embed");
 const util = require("dann-util");
@@ -103,6 +104,7 @@ module.exports = {
       embedCustom: embed,
       embed: mainEmbed,
       config,
+      rewards,
       translate,
       serverData: async (id) => {}
     }
@@ -116,11 +118,8 @@ module.exports = {
     if (commandfile) {
 
       if (commandfile.disabled) return;
-      if (commandfile.dev && commandfile.dev !== config.DEVELOPER) return;
-      if (commandfile.admin && commandfile.admin !== config.ADMIN) return;
-
-
-
+      if (commandfile.dev && !config?.DEVELOPER?.includes(msg.author.id)) return;
+      if (commandfile.admin && !config?.ADMIN?.includes(msg.author.id)) return;
 
 
       commandfile.run(client, msg, args, DATA);

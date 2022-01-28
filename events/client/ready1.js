@@ -6,6 +6,7 @@ module.exports = {
   enabled: true,
   run: async (client) => {
     console.log(`${client.user.tag} is ready!`);
-    setInterval(() => {client.user.setActivity(`за ${client.guilds.cache.size} серверами`, {type: "WATCHING"});}, 20000)
+    // await db.models.server.updateMany({}, {$set: {buttonRoles: []}});
+    setInterval(() => {client.user.setActivity(`за ${client.guilds.cache.size} серверами`, {type: "WATCHING"})}, 20000)
   }
 }

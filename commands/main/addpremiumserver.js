@@ -2,6 +2,7 @@ const ms = require("ms");
 
 module.exports = {
   name: "addserver",
+  dev: true,
   run: async function (client, msg, args, Data) {
     if (!args[0]) return msg.reply("Укажи айди сервера.");
     const guild = client.guilds.cache.get(args[0]);

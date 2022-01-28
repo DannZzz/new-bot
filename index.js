@@ -5,7 +5,13 @@ const util = require("dann-util");
 const db = require("./utils/db");
 require("./utils/database/connect")();
 
-const client = new Client({allowedMentions: { parse: [] }, colors: {main: "#ff00ff"}, token: process.env.TOKEN || config.TOKEN});
+const client = new Client({allowedMentions: { parse: [] }, colors: {
+	red: "#FF5440",
+  green: "#7A912A",
+  none: "#2f3136",
+  main: config.MAIN_COLOR
+}, token: process.env.TOKEN || config.TOKEN});
+
 const { Collection } = client.discord;
 client.commands = new Collection();
 client.aliases = new Collection();
