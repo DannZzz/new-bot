@@ -7,7 +7,7 @@ module.exports = {
   category: 5,
   data: new SlashCommandBuilder()
   	.setName('предлагать-идею')
-  	.setDescription('Посмотреть идеи для ролей.')
+  	.setDescription('Предлагать новую идею для каналов или ролей.')
     .addStringOption(o => o
       .setName("идея")
       .setDescription("Название роли/канала, которое вы хотите опубликовать. Неадекватная идея - бан аккаунта на время.")

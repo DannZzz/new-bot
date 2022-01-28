@@ -7,7 +7,7 @@ module.exports = {
   category: 5,
   data: new SlashCommandBuilder()
   	.setName('идеи')
-  	.setDescription('Посмотреть идеи для ролей.')
+  	.setDescription('Посмотреть идеи для ролей/каналов.')
     .addStringOption(o => o
         .setName("фильтр")
         .setDescription("Выберите тип идей.")
