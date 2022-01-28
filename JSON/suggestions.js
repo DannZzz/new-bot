@@ -95,10 +95,6 @@ const main = {
         lang: 'gb',
       },
       {
-        name: '------------------------',
-        lang: 'gb',
-      },
-      {
         name: '⚡・Litavis',
         lang: 'gb',
       },
@@ -448,10 +444,6 @@ const main = {
       },
       {
         name: '🌍┃Jupiter ༄.◦[40 Lvl]',
-        lang: 'gb',
-      },
-      {
-        name: '┉┉ ∙ ⌈ Level ⌉ ∙ ​┉ ∙ ​┉┉',
         lang: 'gb',
       },
       {
@@ -985,10 +977,6 @@ const main = {
       },
       {
         name: '🎐・bots',
-        lang: 'gb',
-      },
-      {
-        name: '🎐・logs',
         lang: 'gb',
       },
       {
