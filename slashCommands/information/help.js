@@ -108,8 +108,10 @@ module.exports = {
     }
 
     const options = [];
+    const support_server = client.guilds.cache.get("839462072970641419");
+    const invite = await support_server.invites.create("873248728625070090").then(invite => invite.code);
 
-    const mainEmbed = embed(int).setAuthor("Вот мои команды!").setText("Они все используются через **/**.\nАдминистраторам разрешается использовать команды: **Адана открой**, **Адана закрой** и **Адана рифмуй**.\nПервые 2 включают/отключат ответы бота на канале, а последняя включает ответы от бота.").setThumbnail(client.user.avatarURL());
+    const mainEmbed = embed(int).setAuthor("Вот мои команды!").setText(`Они все используются через **/**.\nМой [сервер](https://discord.gg/${invite}) поддержки.`).setThumbnail(client.user.avatarURL());
 
     for (index of [1, 2, 3, 4, 5]) {
       const filtered = client.slashCommands.filter(obj => obj.category === index && !obj.dev);
