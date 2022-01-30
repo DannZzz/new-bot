@@ -30,57 +30,10 @@ module.exports = {
 
     const checkingName = msg.content.toLowerCase().trim().split(/ +/g);
     const filtered = checkingName.filter(message => adananames.includes(message));
-    if (filtered && filtered.length > 0 && !magicStart.includes(msg.content.toLowerCase()) && open !== splited[1] && close !== splited[1]) {
+    if (filtered && filtered.length > 0) {
       const toSend = adana[Math.floor(Math.random() * adana.length)];
       return msg.channel.send(toSend);
     }
-
-    if (adananames.includes(splited[0])) {
-      if (splited[1] === close) {
-        if (!msg.member.permissions.has("ADMINISTRATOR")) return embed(msg).setError("У тебя недостаточно прав").send();
-        const data1 = await db.findOrCreate("server", msg.guild.id);
-        const channel = msg.mentions.channels.first();
-        if (!channel || !channel.isText()) return embed(msg).setError("Текстовый канал не найден!").send();
-        if (data1.magicDisabledChannels && data1.magicDisabledChannels.includes(channel.id)) return embed(msg).setError("Этот канал уже отключён от ответов.").send();
-        if (!data1.magicDisabledChannels) data1.magicDisabledChannels = [];
-        data1.magicDisabledChannels.push(channel.id);
-        await data1.save();
-        msg.reply("Ок брат");
-      } else if (splited[1] === open) {
-        if (!msg.member.permissions.has("ADMINISTRATOR")) return embed(msg).setError("У тебя недостаточно прав").send();
-        const data1 = await db.findOrCreate("server", msg.guild.id);
-        const channel = msg.mentions.channels.first() || msg.guild.channels.cache.get(splited[2]);
-        if (!channel || !channel.isText()) return embed(msg).setError("Текстовый канал не найден!").send();
-        if (!data1.magicDisabledChannels || !data1.magicDisabledChannels.includes(channel.id)) return embed(msg).setError("Этот канал и так не отключён от ответов.").send();
-        data1.magicDisabledChannels.splice(data1.magicDisabledChannels.indexOf(channel.id), 1);
-        await data1.save();
-        msg.reply("Ок брат");
-      }
-    }
-
-
-    if (magicStart.includes(msg.content.toLowerCase())) {
-      if (!msg.member.permissions.has("ADMINISTRATOR")) return embed(msg).setError("У тебя недостаточно прав").send();
-      const data1 = await db.findOrCreate("server", msg.guild.id);
-      if (!data1.magic) {
-        data1.magic = true;
-        await data1.save();
-        msg.reply("ОК БРАТ!");
-      } else {
-        data1.magic = false;
-        await data1.save();
-        msg.reply("Ладно, больше не буду...");
-      }
-      return;
-    }
-
-    if (!msg.content.startsWith(prefix.toLowerCase())) {
-      const data1 = await db.findOrCreate("server", msg.guild.id);
-      if (data1.magic) {
-        if (data1.magicDisabledChannels && !data1.magicDisabledChannels.includes(msg.channel.id)) response(msg);
-      }
-      return;
-    };
 
     let toLang = "ru";
 
