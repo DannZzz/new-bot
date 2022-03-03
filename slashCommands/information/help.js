@@ -13,6 +13,7 @@ module.exports = {
     .setDescription("Информация о команде.")
   ),
   run: async (client, int, Data) => {
+    await int.deferReply()
     const { config, emoji, embed, F, Discord, errEmb, serverData } = Data;
 
     var cmdName = int.options.getString("команда");
@@ -133,7 +134,7 @@ module.exports = {
       menu
     );
 
-    const asd = await int.reply({embeds: [mainEmbed], components: [row], fetchReply: true})
+    const asd = await int.editReply({embeds: [mainEmbed], components: [row], fetchReply: true})
 
     const collector = asd.createMessageComponentCollector({
       filter: i => {
