@@ -13,7 +13,6 @@ module.exports = {
     .setDescription("Информация о команде.")
   ),
   run: async (client, int, Data) => {
-    await int.deferReply()
     const { config, emoji, embed, F, Discord, errEmb, serverData } = Data;
 
     var cmdName = int.options.getString("команда");
@@ -110,7 +109,7 @@ module.exports = {
 
     const options = [];
     const support_server = client.guilds.cache.get("839462072970641419");
-    const invite = await support_server.invites.create("873248728625070090").then(invite => invite.code);
+    const invite = await support_server.invites.create("941032797940883507").then(invite => invite.code);
 
     const mainEmbed = embed(int).setAuthor("Вот мои команды!").setText(`Они все используются через **/**.\nМой [сервер](https://discord.gg/${invite}) поддержки.`).setThumbnail(client.user.avatarURL());
 
@@ -134,7 +133,7 @@ module.exports = {
       menu
     );
 
-    const asd = await int.editReply({embeds: [mainEmbed], components: [row], fetchReply: true})
+    const asd = await int.reply({embeds: [mainEmbed], components: [row], fetchReply: true})
 
     const collector = asd.createMessageComponentCollector({
       filter: i => {
